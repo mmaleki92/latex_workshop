@@ -1,0 +1,426 @@
+
+\section{Structuring a Mathematical Document}
+
+\begin{frame}[fragile]{Theorems and Mathematical Environments - Basics}
+	\begin{columns}
+		\begin{column}{0.5\textwidth}
+			\begin{lstlisting}[basicstyle=\footnotesize\ttfamily]
+				% In preamble
+				\usepackage{amsthm}
+				
+				% Define theorem-like environments
+				\newtheorem{theorem}{Theorem}[section]
+				\newtheorem{lemma}[theorem]{Lemma}
+				\newtheorem{proposition}[theorem]{Proposition}
+				\newtheorem{corollary}[theorem]{Corollary}
+				
+				\theoremstyle{definition}
+				\newtheorem{definition}[theorem]{Definition}
+				\newtheorem{example}[theorem]{Example}
+				
+				\theoremstyle{remark}
+				\newtheorem{remark}[theorem]{Remark}
+				\newtheorem{note}[theorem]{Note}
+			\end{lstlisting}
+		\end{column}
+		
+		\begin{column}{0.5\textwidth}
+			\textbf{Theorem-like environments:}
+			\begin{itemize}
+				\item Theorem, lemma, proposition, corollary
+				\item Definition, example
+				\item Remark, note
+			\end{itemize}
+			
+			\textbf{Theorem styles:}
+			\begin{itemize}
+				\item \texttt{plain} (default): Bold title, italic body
+				\item \texttt{definition}: Bold title, roman body
+				\item \texttt{remark}: Italic title, roman body
+			\end{itemize}
+			
+			\textbf{Numbering options:}
+			\begin{itemize}
+				\item \texttt{[section]} - restart in each section
+				\item \texttt{[theorem]} - share counters
+			\end{itemize}
+		\end{column}
+	\end{columns}
+	
+	\begin{tip}
+		Define theorem environments in the preamble to use throughout your document
+	\end{tip}
+\end{frame}
+
+\begin{frame}[fragile]{Using Theorems and Proofs}
+	\begin{columns}
+		\begin{column}{0.5\textwidth}
+			\begin{lstlisting}[basicstyle=\footnotesize\ttfamily]
+				% Basic usage
+				\begin{theorem}[Pythagorean Theorem]
+					In a right triangle, the square of the 
+					hypotenuse equals the sum of squares 
+					of the other two sides.
+				\end{theorem}
+				
+				\begin{proof}
+					This follows from... [proof details]
+				\end{proof}
+				
+				% Famous example
+				\begin{theorem}[Fermat's Last Theorem]
+					If $n > 2$ is a positive integer, then 
+					the equation
+					\[
+					a^n + b^n = c^n
+					\]
+					has no solutions in positive integers 
+					$a$, $b$, and $c$.
+				\end{theorem}
+			\end{lstlisting}
+		\end{column}
+		
+		\begin{column}{0.5\textwidth}
+			\def\labelenumi{\Roman{enumi}.}
+			
+			\begin{block}{Rendered output:}
+				\textbf{Theorem 1} (Pythagorean Theorem). \textit{In a right triangle, the square of the hypotenuse equals the sum of squares of the other two sides.}
+				
+				\textit{Proof.} This follows from... [proof details] \hfill $\square$
+				
+				\vspace{1em}
+				
+				\textbf{Theorem 2} (Fermat's Last Theorem). \textit{If $n > 2$ is a positive integer, then the equation
+					\[
+					a^n + b^n = c^n
+					\]
+					has no solutions in positive integers $a$, $b$, and $c$.}
+			\end{block}
+			
+			\textbf{Special features:}
+			\begin{itemize}
+				\item Optional theorem name in []
+				\item \texttt{proof} environment adds QED symbol ($\square$)
+				\item Can include math displays inside theorems
+			\end{itemize}
+		\end{column}
+	\end{columns}
+	
+	\begin{tip}
+		For papers, check if the target journal provides specific theorem definitions
+	\end{tip}
+\end{frame}
+
+\begin{frame}[fragile]{Definition and Example Environments}
+	\begin{columns}
+		\begin{column}{0.5\textwidth}
+			\begin{lstlisting}[basicstyle=\footnotesize\ttfamily]
+				\begin{definition}[Continuous Function]
+					A function $f$ is continuous at point $a$
+					if $\lim_{x \to a} f(x) = f(a)$.
+				\end{definition}
+				
+				\begin{example}
+					The function $f(x) = x^2$ is continuous
+					everywhere.
+				\end{example}
+				
+				\begin{remark}
+					Not every function is continuous.
+					For instance, $f(x) = 1/x$ is not 
+					continuous at $x = 0$.
+				\end{remark}
+			\end{lstlisting}
+		\end{column}
+		
+		\begin{column}{0.5\textwidth}
+			\begin{block}{Rendered output:}
+				\textbf{Definition 1} (Continuous Function). A function $f$ is continuous at point $a$ if $\lim_{x \to a} f(x) = f(a)$.
+				
+				\textbf{Example 2.} The function $f(x) = x^2$ is continuous everywhere.
+				
+				\textit{Remark 3.} Not every function is continuous. For instance, $f(x) = 1/x$ is not continuous at $x = 0$.
+			\end{block}
+			
+			\textbf{Using multiple theorem types:}
+			\begin{itemize}
+				\item All share the same counter by default when using \texttt{[theorem]}
+				\item Can be referenced with \texttt{\textbackslash ref\{label\}}
+				\item Different visual styles help readers identify content types
+			\end{itemize}
+		\end{column}
+	\end{columns}
+	
+	\begin{tip}
+		Consistent use of environments improves document readability and navigation
+	\end{tip}
+\end{frame}
+
+\begin{frame}[fragile]{Including Graphics}
+	\begin{columns}
+		\begin{column}{0.5\textwidth}
+			\begin{lstlisting}
+				% In preamble
+				\usepackage{graphicx}
+				
+				% Basic inclusion
+				\begin{figure}
+					\centering
+					\includegraphics{image-filename}
+					\caption{A description of the figure}
+					\label{fig:mylabel}
+				\end{figure}
+				
+				% With options
+				\begin{figure}
+					\centering
+					\includegraphics[
+					width=0.8\textwidth,
+					height=6cm,
+					keepaspectratio
+					]{image-filename}
+					\caption{A description of the figure}
+					\label{fig:mylabel}
+				\end{figure}
+				
+				% Reference the figure
+				As shown in Figure~\ref{fig:mylabel}...
+			\end{lstlisting}
+		\end{column}
+		
+		\begin{column}{0.5\textwidth}
+			\textbf{Supported formats:}
+			\begin{itemize}
+				\item PDF, PNG, JPG (with pdfLaTeX)
+				\item PDF, EPS (with LaTeX)
+			\end{itemize}
+			
+			\textbf{Common options:}
+			\begin{itemize}
+				\item \texttt{width=0.8\textbackslash textwidth}
+				\item \texttt{height=6cm}
+				\item \texttt{scale=0.5}
+				\item \texttt{angle=90}
+				\item \texttt{keepaspectratio} (prevents distortion)
+			\end{itemize}
+			
+			\textbf{Figure placement:}
+			\begin{itemize}
+				\item \texttt{h} - here
+				\item \texttt{t} - top
+				\item \texttt{b} - bottom
+				\item \texttt{p} - separate page
+				\item \texttt{!} - override defaults
+				\item Example: \texttt{\textbackslash begin\{figure\}[htbp]}
+			\end{itemize}
+		\end{column}
+	\end{columns}
+	
+	\begin{warning}
+		LaTeX decides where to place figures - they may "float" away from where they appear in the source
+	\end{warning}
+\end{frame}
+
+\begin{frame}[fragile]{Tables as Floats}
+	\begin{columns}
+		\begin{column}{0.5\textwidth}
+			\begin{lstlisting}
+				% Professional table with caption
+				\begin{table}
+					\centering
+					\caption{Comparison of algorithms}
+					\label{tab:comparison}
+					\begin{tabular}{lcc}
+						\toprule
+						Algorithm & Time & Space \\
+						\midrule
+						Quicksort & $O(n \log n)$ & $O(n)$ \\
+						Mergesort & $O(n \log n)$ & $O(n)$ \\
+						Heapsort & $O(n \log n)$ & $O(1)$ \\
+						\bottomrule
+					\end{tabular}
+				\end{table}
+				
+				% Reference the table
+				Table~\ref{tab:comparison} shows...
+				
+				% Multi-column table
+				\begin{tabular}{|c|c|c|}
+					\hline
+					\multicolumn{2}{|c|}{Combined} & Separate \\
+					\hline
+					A & B & C \\
+					\hline
+				\end{tabular}
+			\end{lstlisting}
+		\end{column}
+		
+		\begin{column}{0.5\textwidth}
+			\textbf{Table vs Tabular:}
+			\begin{itemize}
+				\item \texttt{table} - float environment (like figure)
+				\item \texttt{tabular} - actual content structure
+			\end{itemize}
+			
+			\textbf{Professional tables:}
+			\begin{itemize}
+				\item Use \texttt{booktabs} package
+				\item \texttt{\textbackslash toprule}, \texttt{\textbackslash midrule}, \texttt{\textbackslash bottomrule}
+				\item Avoid vertical lines (typographic best practice)
+			\end{itemize}
+			
+			\textbf{Advanced features:}
+			\begin{itemize}
+				\item \texttt{\textbackslash multicolumn\{2\}\{c\}\{Combined\}}
+				\item \texttt{\textbackslash multirow} (requires package)
+				\item \texttt{\textbackslash cline\{2-3\}} (partial horizontal line)
+				\item \texttt{p\{width\}} column type for paragraph text
+			\end{itemize}
+		\end{column}
+	\end{columns}
+	
+	\begin{tip}
+		Always put tables in \texttt{table} environments with captions and labels
+	\end{tip}
+\end{frame}
+
+\begin{frame}[fragile]{Cross-Referencing}
+	\begin{columns}
+		\begin{column}{0.5\textwidth}
+			\begin{lstlisting}
+				% Labels and references
+				\section{Introduction}
+				\label{sec:intro}
+				
+				In Section~\ref{sec:methods}, we...
+				
+				\begin{equation}
+					E = mc^2
+					\label{eq:einstein}
+				\end{equation}
+				
+				Equation~\eqref{eq:einstein} shows...
+				
+				\begin{figure}
+					\centering
+					\includegraphics{graph}
+					\caption{Important data}
+					\label{fig:data}
+				\end{figure}
+				
+				As shown in Figure~\ref{fig:data}...
+				
+				\begin{theorem}
+					\label{thm:pythagoras}
+					In a right triangle...
+				\end{theorem}
+				
+				By Theorem~\ref{thm:pythagoras}...
+			\end{lstlisting}
+		\end{column}
+		
+		\begin{column}{0.5\textwidth}
+			\textbf{Labeling conventions:}
+			\begin{itemize}
+				\item Use prefixes: \texttt{sec:}, \texttt{eq:}, \texttt{fig:}, \texttt{tab:}, \texttt{thm:}
+				\item Choose descriptive names
+			\end{itemize}
+			
+			\textbf{Reference commands:}
+			\begin{itemize}
+				\item \texttt{\textbackslash ref\{label\}} - general reference
+				\item \texttt{\textbackslash eqref\{label\}} - equation reference (adds parentheses)
+				\item \texttt{\textbackslash pageref\{label\}} - page number
+			\end{itemize}
+			
+			\textbf{Tips:}
+			\begin{itemize}
+				\item Use \texttt{\textasciitilde} for non-breaking space
+				\item Run LaTeX twice to resolve references
+				\item Use descriptive text: "Theorem~\ref{thm:main}" not just "see~\ref{thm:main}"
+			\end{itemize}
+		\end{column}
+	\end{columns}
+	
+	\begin{warning}
+		If you see "??" in your PDF, you need to compile again
+	\end{warning}
+\end{frame}
+
+\begin{frame}[fragile]{Table of Contents and Document Divisions}
+	\begin{columns}
+		\begin{column}{0.5\textwidth}
+			\begin{lstlisting}
+				\documentclass{article}
+				
+				\title{Complete Analysis}
+				\author{Author Name}
+				\date{\today}
+				
+				\begin{document}
+					
+					\maketitle
+					\tableofcontents
+					\listoffigures
+					\listoftables
+					
+					\section{Introduction}
+					...
+					
+					\appendix
+					\section{Derivation Details}
+					...
+					
+				\end{document}
+			\end{lstlisting}
+		\end{column}
+		
+		\begin{column}{0.5\textwidth}
+			\textbf{Automatic lists:}
+			\begin{itemize}
+				\item \texttt{\textbackslash tableofcontents}
+				\item \texttt{\textbackslash listoffigures}
+				\item \texttt{\textbackslash listoftables}
+			\end{itemize}
+			
+			\textbf{Document divisions:}
+			\begin{itemize}
+				\item Front matter: title page, TOC, etc.
+				\item Main matter: the content
+				\item Back matter: bibliography, appendices
+			\end{itemize}
+			
+			\textbf{Special commands:}
+			\begin{itemize}
+				\item \texttt{\textbackslash appendix} - changes numbering to A, B, ...
+				\item \texttt{\textbackslash part} - for very large documents
+			\end{itemize}
+			
+			\begin{tip}
+				Run LaTeX twice to generate proper TOC
+			\end{tip}
+		\end{column}
+	\end{columns}
+\end{frame}
+
+\begin{frame}{Exercise 3: Document Structure}
+	\begin{practice}
+		\textbf{Create a structured mathematical document with:}
+		\begin{enumerate}
+			\item At least one theorem, definition, and example
+			\item A figure with caption and label 
+			\item A table with caption and label
+			\item Proper cross-references to all elements
+			\item A table of contents
+			\item At least two sections with mathematical content
+		\end{enumerate}
+	\end{practice}
+	
+	\begin{warning}
+		Remember to run LaTeX multiple times to resolve references and TOC!
+	\end{warning}
+	
+	\begin{tip}
+		Organize your document into logical sections before adding detailed content
+	\end{tip}
+\end{frame}

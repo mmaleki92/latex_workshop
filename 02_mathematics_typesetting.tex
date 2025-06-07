@@ -1,0 +1,567 @@
+\section{Mathematical Typesetting}
+
+\begin{frame}[fragile]{Inline vs. Display Math}
+    \begin{columns}
+        \begin{column}{0.5\textwidth}
+            \begin{lstlisting}
+% Inline math (within text):
+Einstein's equation $E = mc^2$ 
+revolutionized physics.
+
+The quadratic formula is 
+$x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}$.
+
+% Display math (centered, set apart):
+\[
+E = mc^2
+\]
+
+\begin{equation}
+    x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}
+\end{equation}
+            \end{lstlisting}
+        \end{column}
+        
+        \begin{column}{0.5\textwidth}
+            \textbf{Inline math:}
+            \begin{itemize}
+                \item Inside text flow: $E = mc^2$
+                \item Uses \texttt{\$...\$} or \texttt{\textbackslash(..\\textbackslash)} delimiters
+                \item Less vertical space
+                \item Avoids line breaks
+            \end{itemize}
+            
+            \textbf{Display math:}
+            \begin{itemize}
+                \item Set apart from text
+                \item Centered on its own line
+                \item \texttt{\textbackslash[...\textbackslash]} (unnumbered)
+                \item \texttt{equation} environment (numbered)
+            \end{itemize}
+        \end{column}
+    \end{columns}
+    
+    \begin{warning}
+        Never use \texttt{\$\$...\$\$} for display math in LaTeX (a TeX relic)
+    \end{warning}
+\end{frame}
+
+\begin{frame}[fragile]{Basic Math Syntax}
+    \begin{columns}
+        \begin{column}{0.5\textwidth}
+            \begin{lstlisting}
+% Subscripts and superscripts
+$x^2$         % superscript
+$x_i$         % subscript
+$x_i^2$       % both
+$x^{2n}$      % multi-character
+$x_{i,j}$     % multi-character
+$x^2_i$       % both
+
+% Fractions
+$\frac{1}{2}$           % standard
+$\frac{\partial f}{\partial x}$  % complex
+$\tfrac{1}{2}$          % text-style
+
+% Square roots
+$\sqrt{x}$              % square root
+$\sqrt[3]{x}$           % cube root
+            \end{lstlisting}
+        \end{column}
+        
+        \begin{column}{0.5\textwidth}
+            \textbf{Subscripts and superscripts:}
+            \begin{itemize}
+                \item $x^2$ (superscript)
+                \item $x_i$ (subscript)
+                \item $x_i^2$ (both)
+                \item $x^{2n}$ (multi-character superscript)
+                \item $x_{i,j}$ (multi-character subscript)
+            \end{itemize}
+            
+            \textbf{Fractions:}
+            \begin{itemize}
+                \item $\frac{1}{2}$ (standard)
+                \item $\frac{\partial f}{\partial x}$ (complex)
+                \item $\tfrac{1}{2}$ (text-style)
+            \end{itemize}
+            
+            \textbf{Square roots:}
+            \begin{itemize}
+                \item $\sqrt{x}$ (square root)
+                \item $\sqrt[3]{x}$ (cube root)
+            \end{itemize}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{Greek Letters and Special Symbols}
+    \begin{columns}
+        \begin{column}{0.5\textwidth}
+            \begin{lstlisting}
+% Lowercase Greek letters
+$\alpha, \beta, \gamma, \delta$
+$\epsilon, \varepsilon, \zeta, \eta$
+$\theta, \vartheta, \iota, \kappa$
+$\lambda, \mu, \nu, \xi$
+$o, \pi, \varpi, \rho, \varrho$
+$\sigma, \varsigma, \tau, \upsilon$
+$\phi, \varphi, \chi, \psi, \omega$
+
+% Uppercase Greek letters
+$\Gamma, \Delta, \Theta, \Lambda$
+$\Xi, \Pi, \Sigma, \Upsilon$
+$\Phi, \Psi, \Omega$
+
+% Special symbols
+$\infty, \partial, \nabla, \wp$
+$\emptyset, \forall, \exists$
+$\in, \notin, \subset, \supset$
+$\cup, \cap, \setminus$
+            \end{lstlisting}
+        \end{column}
+        
+        \begin{column}{0.5\textwidth}
+            \textbf{Lowercase Greek:}
+            \begin{center}
+$\alpha, \beta, \gamma, \delta$\\
+$\epsilon, \varepsilon, \zeta, \eta$\\
+$\theta, \vartheta, \iota, \kappa$\\
+$\lambda, \mu, \nu, \xi$\\
+$o, \pi, \varpi, \rho, \varrho$\\
+$\sigma, \varsigma, \tau, \upsilon$\\
+$\phi, \varphi, \chi, \psi, \omega$
+            \end{center}
+            
+            \textbf{Uppercase Greek:}
+            \begin{center}
+$\Gamma, \Delta, \Theta, \Lambda$\\
+$\Xi, \Pi, \Sigma, \Upsilon$\\
+$\Phi, \Psi, \Omega$
+            \end{center}
+            
+            \textbf{Special symbols:}
+            \begin{center}
+$\infty, \partial, \nabla, \wp$\\
+$\emptyset, \forall, \exists$\\
+$\in, \notin, \subset, \supset$\\
+$\cup, \cap, \setminus$
+            \end{center}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{Mathematical Operators and Relations}
+    \begin{columns}
+        \begin{column}{0.5\textwidth}
+\begin{lstlisting}
+% Binary relations
+$=, \ne, \approx, \sim, \cong$
+$<, \le, >, \ge$
+$\ll, \gg, \prec, \succ$
+
+% Binary operators
+$+, -, \times, \div, \pm, \mp$
+$\cdot, \ast, \star, \circ, \bullet$
+$\cup, \cap, \setminus, \wedge, \vee$
+
+% Large operators
+$\sum_{i=1}^{n} i = \frac{n(n+1)}{2}$
+
+$\prod_{i=1}^{n} i = n!$
+
+$\int_{a}^{b} f(x) \, dx$
+
+$\oint_C f(z) \, dz = 2\pi i$
+
+$\lim_{x \to 0} \frac{\sin x}{x} = 1$
+\end{lstlisting}
+        \end{column}
+        
+        \begin{column}{0.5\textwidth}
+            \textbf{Binary relations:}
+            \begin{center}
+                $=, \ne, \approx, \sim, \cong$\\
+                $<, \le, >, \ge$\\
+                $\ll, \gg, \prec, \succ$
+            \end{center}
+            
+            \textbf{Binary operators:}
+            \begin{center}
+                $+, -, \times, \div, \pm, \mp$\\
+                $\cdot, \ast, \star, \circ, \bullet$\\
+                $\cup, \cap, \setminus, \wedge, \vee$
+            \end{center}
+            
+            \textbf{Large operators:}
+            \begin{align*}
+                \sum_{i=1}^{n} i &= \frac{n(n+1)}{2}\\
+                \prod_{i=1}^{n} i &= n!\\
+                \int_{a}^{b} f(x) \, dx\\
+                \oint_C f(z) \, dz &= 2\pi i\\
+                \lim_{x \to 0} \frac{\sin x}{x} &= 1
+            \end{align*}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{Function Names}
+    \begin{columns}
+        \begin{column}{0.5\textwidth}
+            \begin{lstlisting}
+                % Wrong way (italicized)
+                $sin(x)$
+                $log(x)$
+                $lim_{x \to 0} f(x)$
+                
+                % Correct way (upright)
+                $\sin(x)$
+                $\log(x)$
+                $\lim_{x \to 0} f(x)$
+                
+                % Common function names
+                $\sin(x), \cos(x), \tan(x)$
+                $\arcsin(x), \arccos(x), \arctan(x)$
+                $\exp(x), \ln(x), \log_{10}(x)$
+                $\min(x,y), \max(x,y)$
+                $\gcd(a,b), \det(A), \dim(V)$
+            \end{lstlisting}
+        \end{column}
+        
+        \begin{column}{0.5\textwidth}
+            \textbf{Wrong (italicized):}
+            \begin{itemize}
+                \item $sin(x)$
+                \item $log(x)$
+                \item $lim_{x \to 0} f(x)$
+            \end{itemize}
+            
+            \textbf{Correct (upright):}
+            \begin{itemize}
+                \item $\sin(x)$
+                \item $\log(x)$
+                \item $\lim_{x \to 0} f(x)$
+            \end{itemize}
+            
+            \textbf{Common function names:}
+            \begin{itemize}
+                \item $\sin(x), \cos(x), \tan(x)$
+                \item $\arcsin(x), \arccos(x), \arctan(x)$
+                \item $\exp(x), \ln(x), \log_{10}(x)$
+                \item $\min(x,y), \max(x,y)$
+                \item $\gcd(a,b), \det(A), \dim(V)$
+            \end{itemize}
+        \end{column}
+    \end{columns}
+    
+    \begin{tip}
+        Always use the backslash command for function names
+    \end{tip}
+\end{frame}
+
+\begin{frame}[fragile]{Delimiters (Brackets and Parentheses)}
+    \begin{columns}
+        \begin{column}{0.5\textwidth}
+            \begin{lstlisting}
+                % Fixed size
+                $(x)$
+                $[x]$
+                $\{x\}$
+                $|x|$
+                $\|x\|$
+                $\langle x \rangle$
+                $\lceil x \rceil$
+                $\lfloor x \rfloor$
+                
+                % Auto-scaling
+                $\left( \frac{1}{1-x^2} \right)$
+                
+                $\left[ \sum_{i=1}^{n} a_i \right]$
+                
+                $\left\{ \frac{n(n+1)}{2} \right\}$
+                
+                $\left| \det(A) \right|$
+            \end{lstlisting}
+        \end{column}
+        
+        \begin{column}{0.5\textwidth}
+            \textbf{Fixed size:}
+            \begin{center}
+                $(x)$ - parentheses\\
+                $[x]$ - square brackets\\
+                $\{x\}$ - curly braces\\
+                $|x|$ - absolute value\\
+                $\|x\|$ - norm\\
+                $\langle x \rangle$ - angle brackets\\
+                $\lceil x \rceil$ - ceiling\\
+                $\lfloor x \rfloor$ - floor
+            \end{center}
+            
+            \textbf{Auto-scaling:}
+            \begin{center}
+                $\left( \frac{1}{1-x^2} \right)$\\[5pt]
+                $\left[ \sum_{i=1}^{n} a_i \right]$\\[5pt]
+                $\left\{ \frac{n(n+1)}{2} \right\}$\\[5pt]
+                $\left| \det(A) \right|$
+            \end{center}
+        \end{column}
+    \end{columns}
+    
+    \begin{tip}
+        Always use \texttt{\textbackslash left} and \texttt{\textbackslash right} for complex expressions
+    \end{tip}
+\end{frame}
+
+\begin{frame}[fragile]{Matrices}
+    \begin{columns}
+        \begin{column}{0.5\textwidth}
+            \begin{lstlisting}
+                % Matrix without delimiters
+                \begin{matrix}
+                    a & b \\
+                    c & d
+                \end{matrix}
+                
+                % Matrix with parentheses
+                \begin{pmatrix}
+                    a & b \\
+                    c & d
+                \end{pmatrix}
+                
+                % Matrix with brackets
+                \begin{bmatrix}
+                    a & b \\
+                    c & d
+                \end{bmatrix}
+                
+                % Matrix with braces
+                \begin{Bmatrix}
+                    a & b \\
+                    c & d
+                \end{Bmatrix}
+                
+                % Matrix with vertical bars
+                \begin{vmatrix}
+                    a & b \\
+                    c & d
+                \end{vmatrix}
+            \end{lstlisting}
+        \end{column}
+        
+        \begin{column}{0.5\textwidth}
+            \begin{center}
+                $\begin{matrix} a & b \\ c & d \end{matrix}$ - no delimiters\\[10pt]
+                
+                $\begin{pmatrix} a & b \\ c & d \end{pmatrix}$ - parentheses\\[10pt]
+                
+                $\begin{bmatrix} a & b \\ c & d \end{bmatrix}$ - brackets\\[10pt]
+                
+                $\begin{Bmatrix} a & b \\ c & d \end{Bmatrix}$ - braces\\[10pt]
+                
+                $\begin{vmatrix} a & b \\ c & d \end{vmatrix}$ - determinant
+            \end{center}
+            
+            \begin{itemize}
+                \item Use \texttt{\&} to separate columns
+                \item Use \texttt{\\} for new rows
+                \item Requires \texttt{amsmath} package
+            \end{itemize}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{Equation Alignment}
+    \begin{columns}
+        \begin{column}{0.5\textwidth}
+            \begin{lstlisting}
+                % Multiple equations (numbered)
+                \begin{align}
+                    E &= mc^2 \\
+                    F &= ma
+                \end{align}
+                
+                % Multiple equations (unnumbered)
+                \begin{align*}
+                    (a+b)^2 &= (a+b)(a+b) \\
+                    &= a(a+b) + b(a+b) \\
+                    &= a^2 + ab + ba + b^2 \\
+                    &= a^2 + 2ab + b^2
+                \end{align*}
+                
+                % Align at multiple places
+                \begin{align}
+                    f(x) &= (x+a)(x+b) \\
+                    &= x^2 + (a+b)x + ab \\
+                    &= x^2 + cx + d
+                \end{align}
+            \end{lstlisting}
+        \end{column}
+        
+        \begin{column}{0.5\textwidth}
+            \textbf{Multiple equations (numbered):}
+            \begin{align}
+                E &= mc^2 \\
+                F &= ma
+            \end{align}
+            
+            \textbf{Multiple equations (unnumbered):}
+            \begin{align*}
+                (a+b)^2 &= (a+b)(a+b) \\
+                &= a(a+b) + b(a+b) \\
+                &= a^2 + ab + ba + b^2 \\
+                &= a^2 + 2ab + b^2
+            \end{align*}
+            
+            \begin{itemize}
+                \item Alignment point is marked with \texttt{\&}
+                \item Each line ends with \texttt{\\}
+                \item \texttt{align*} for unnumbered equations
+                \item Requires \texttt{amsmath} package
+            \end{itemize}
+        \end{column}
+    \end{columns}
+    
+    \begin{tip}
+        Always align equations at the relation symbol (=, <, etc.)
+    \end{tip}
+\end{frame}
+
+\begin{frame}[fragile]{Cases and Multi-Line Expressions}
+    \begin{columns}
+        \begin{column}{0.5\textwidth}
+            \begin{lstlisting}
+                % Cases (piecewise functions)
+                \begin{equation}
+                    |x| = 
+                    \begin{cases}
+                        x & \text{if } x \geq 0 \\
+                        -x & \text{if } x < 0
+                    \end{cases}
+                \end{equation}
+                
+                % Multi-line expression
+                \begin{equation}
+                    \begin{split}
+                        (a+b)^3 = &(a+b)^2(a+b) \\
+                        = &(a^2+2ab+b^2)(a+b) \\
+                        = &a^3 + 2a^2b + ab^2 \\
+                        &+ a^2b + 2ab^2 + b^3 \\
+                        = &a^3 + 3a^2b + 3ab^2 + b^3
+                    \end{split}
+                \end{equation}
+            \end{lstlisting}
+        \end{column}
+        
+        \begin{column}{0.5\textwidth}
+            \textbf{Cases (piecewise functions):}
+            \begin{equation}
+                |x| = 
+                \begin{cases}
+                    x & \text{if } x \geq 0 \\
+                    -x & \text{if } x < 0
+                \end{cases}
+            \end{equation}
+            
+            \textbf{Multi-line expression:}
+            \begin{equation}
+                \begin{split}
+                    (a+b)^3 = &(a+b)^2(a+b) \\
+                    = &(a^2+2ab+b^2)(a+b) \\
+                    = &a^3 + 2a^2b + ab^2 \\
+                    &+ a^2b + 2ab^2 + b^3 \\
+                    = &a^3 + 3a^2b + 3ab^2 + b^3
+                \end{split}
+            \end{equation}
+            
+            \begin{tip}
+                Use \texttt{\textbackslash text\{...\}} for text within math mode
+            \end{tip}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{Additional Math Environments}
+    \begin{columns}
+        \begin{column}{0.5\textwidth}
+            \begin{lstlisting}
+                % Gather - centered, multi-line
+                \begin{gather}
+                    a_1 = b_1 + c_1\\
+                    a_2 = b_2 + c_2 + d_2
+                \end{gather}
+                
+                % Numbered array
+                \begin{array}{lcr}
+                    left & center & right\\
+                    x+y & x & y
+                \end{array}
+                
+                % Multiline equation
+                \begin{multline}
+                    a + b + c + d + e + f \\
+                    + i + j + k + l + m
+                \end{multline}
+                
+                % Subequations (hierarchical numbering)
+                \begin{subequations}
+                    \begin{align}
+                        a &= b + c\\
+                        d &= e + f
+                    \end{align}
+                \end{subequations}
+            \end{lstlisting}
+        \end{column}
+        
+        \begin{column}{0.5\textwidth}
+            \textbf{Gather} - centered equations:
+            \begin{gather}
+                a_1 = b_1 + c_1\\
+                a_2 = b_2 + c_2 + d_2
+            \end{gather}
+            
+            \textbf{Array} - tabular math:
+            \begin{center}
+                $\begin{array}{lcr}
+                    \text{left} & \text{center} & \text{right}\\
+                    x+y & x & y
+                \end{array}$
+            \end{center}
+            
+            \textbf{Multline} - break long equations:
+            \begin{multline}
+                a + b + c + d + e + f \\
+                + i + j + k + l + m
+            \end{multline}
+            
+            \textbf{Subequations} - hierarchical:
+            \begin{subequations}
+                \begin{align}
+                    a &= b + c\\
+                    d &= e + f
+                \end{align}
+            \end{subequations}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}{Exercise 2: Mathematical Typesetting}
+    \begin{practice}
+        \textbf{Create a document with these mathematical elements:}
+        \begin{enumerate}
+            \item A paragraph with inline math expressions
+            \item Multiple display math equations (both numbered and unnumbered)
+            \item An equation with fractions, superscripts, subscripts, and Greek letters
+            \item A piecewise function using cases
+            \item A matrix equation
+            \item A multi-line derivation with proper alignment
+        \end{enumerate}
+    \end{practice}
+    
+    \begin{tip}
+        \begin{itemize}
+            \item Use \texttt{align} for multiple aligned equations
+            \item Remember \texttt{\textbackslash left} and \texttt{\textbackslash right} for auto-scaling delimiters
+            \item Test complex expressions separately before combining them
+        \end{itemize}
+    \end{tip}
+\end{frame}
