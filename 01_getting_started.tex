@@ -135,68 +135,6 @@
     \end{practice}
 \end{frame}
 
-\begin{frame}{Your First LaTeX Document: Complete Template}
-	\begin{columns}
-		\begin{column}{0.55\textwidth}
-			\begin{lstlisting}[basicstyle=\small\ttfamily]
-				% My first LaTeX document
-				\documentclass{article}
-				
-				% ----- PREAMBLE -----
-				% (Settings and packages go here)
-				\usepackage{amsmath}  % For math
-				\usepackage{graphicx} % For images
-				\usepackage[margin=1in]{geometry} % Page layout
-				
-				% Document information
-				\title{My First \LaTeX{} Document}
-				\author{Your Name}
-				\date{\today}
-				
-				% ----- DOCUMENT CONTENT -----
-				\begin{document}
-					
-					\maketitle  % Creates title from info above
-					
-					\section{Introduction}
-					Hello world! This is my first \LaTeX{} document.
-					It supports mathematics like $E = mc^2$.
-					
-					\section{A List of Items}
-					\begin{itemize}
-						\item First item
-						\item Second item
-						\item Third item with math: $\alpha^2 + \beta^2$
-					\end{itemize}
-					
-				\end{document}
-			\end{lstlisting}
-		\end{column}
-		
-		\begin{column}{0.45\textwidth}
-			\begin{alertblock}{File structure explained}
-				\begin{enumerate}
-					\item \textbf{Preamble}: Everything before \verb|\begin{document}|
-						\begin{itemize}
-							\item Document class
-							\item Packages
-							\item Title information
-						\end{itemize}
-						\item \textbf{Body}: Everything between \verb|\begin{document}| and \verb|\end{document}|
-						\begin{itemize}
-							\item Actual content appears here
-							\item Sections, text, math, etc.
-						\end{itemize}
-					\end{enumerate}
-				\end{alertblock}
-				
-				\begin{tip}
-					Save this as \texttt{firstdoc.tex} and compile it to see the result!
-				\end{tip}
-			\end{column}
-		\end{columns}
-	\end{frame}
-
 \begin{frame}[fragile]{Document Classes}
     \begin{columns}
         \begin{column}{0.5\textwidth}
