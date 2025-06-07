@@ -209,22 +209,22 @@ $\lim_{x \to 0} \frac{\sin x}{x} = 1$
     \begin{columns}
         \begin{column}{0.5\textwidth}
             \begin{lstlisting}
-                % Wrong way (italicized)
-                $sin(x)$
-                $log(x)$
-                $lim_{x \to 0} f(x)$
-                
-                % Correct way (upright)
-                $\sin(x)$
-                $\log(x)$
-                $\lim_{x \to 0} f(x)$
+% Wrong way (italicized)
+$sin(x)$
+$log(x)$
+$lim_{x \to 0} f(x)$
+
+% Correct way (upright)
+$\sin(x)$
+$\log(x)$
+$\lim_{x \to 0} f(x)$
                 
                 % Common function names
-                $\sin(x), \cos(x), \tan(x)$
-                $\arcsin(x), \arccos(x), \arctan(x)$
-                $\exp(x), \ln(x), \log_{10}(x)$
-                $\min(x,y), \max(x,y)$
-                $\gcd(a,b), \det(A), \dim(V)$
+$\sin(x), \cos(x), \tan(x)$
+$\arcsin(x), \arccos(x), \arctan(x)$
+$\exp(x), \ln(x), \log_{10}(x)$
+$\min(x,y), \max(x,y)$
+$\gcd(a,b), \det(A), \dim(V)$
             \end{lstlisting}
         \end{column}
         
@@ -262,26 +262,26 @@ $\lim_{x \to 0} \frac{\sin x}{x} = 1$
 \begin{frame}[fragile]{Delimiters (Brackets and Parentheses)}
     \begin{columns}
         \begin{column}{0.5\textwidth}
-            \begin{lstlisting}
-                % Fixed size
-                $(x)$
-                $[x]$
-                $\{x\}$
-                $|x|$
-                $\|x\|$
-                $\langle x \rangle$
-                $\lceil x \rceil$
-                $\lfloor x \rfloor$
-                
-                % Auto-scaling
-                $\left( \frac{1}{1-x^2} \right)$
-                
-                $\left[ \sum_{i=1}^{n} a_i \right]$
-                
-                $\left\{ \frac{n(n+1)}{2} \right\}$
-                
-                $\left| \det(A) \right|$
-            \end{lstlisting}
+\begin{lstlisting}
+% Fixed size
+$(x)$
+$[x]$
+$\{x\}$
+$|x|$
+$\|x\|$
+$\langle x \rangle$
+$\lceil x \rceil$
+$\lfloor x \rfloor$
+
+% Auto-scaling
+$\left( \frac{1}{1-x^2} \right)$
+
+$\left[ \sum_{i=1}^{n} a_i \right]$
+
+$\left\{ \frac{n(n+1)}{2} \right\}$
+
+$\left| \det(A) \right|$
+\end{lstlisting}
         \end{column}
         
         \begin{column}{0.5\textwidth}
@@ -315,37 +315,37 @@ $\lim_{x \to 0} \frac{\sin x}{x} = 1$
 \begin{frame}[fragile]{Matrices}
     \begin{columns}
         \begin{column}{0.5\textwidth}
-            \begin{lstlisting}
-                % Matrix without delimiters
-                \begin{matrix}
-                    a & b \\
-                    c & d
-                \end{matrix}
-                
-                % Matrix with parentheses
-                \begin{pmatrix}
-                    a & b \\
-                    c & d
-                \end{pmatrix}
-                
-                % Matrix with brackets
-                \begin{bmatrix}
-                    a & b \\
-                    c & d
-                \end{bmatrix}
-                
-                % Matrix with braces
-                \begin{Bmatrix}
-                    a & b \\
-                    c & d
-                \end{Bmatrix}
-                
-                % Matrix with vertical bars
-                \begin{vmatrix}
-                    a & b \\
-                    c & d
-                \end{vmatrix}
-            \end{lstlisting}
+\begin{lstlisting}
+    % Matrix without delimiters
+    \begin{matrix}
+        a & b \\
+        c & d
+    \end{matrix}
+    
+    % Matrix with parentheses
+    \begin{pmatrix}
+        a & b \\
+        c & d
+    \end{pmatrix}
+    
+    % Matrix with brackets
+    \begin{bmatrix}
+        a & b \\
+        c & d
+    \end{bmatrix}
+    
+    % Matrix with braces
+    \begin{Bmatrix}
+        a & b \\
+        c & d
+    \end{Bmatrix}
+    
+    % Matrix with vertical bars
+    \begin{vmatrix}
+        a & b \\
+        c & d
+    \end{vmatrix}
+\end{lstlisting}
         \end{column}
         
         \begin{column}{0.5\textwidth}
@@ -374,26 +374,26 @@ $\lim_{x \to 0} \frac{\sin x}{x} = 1$
     \begin{columns}
         \begin{column}{0.5\textwidth}
             \begin{lstlisting}
-                % Multiple equations (numbered)
-                \begin{align}
-                    E &= mc^2 \\
-                    F &= ma
-                \end{align}
-                
-                % Multiple equations (unnumbered)
-                \begin{align*}
-                    (a+b)^2 &= (a+b)(a+b) \\
-                    &= a(a+b) + b(a+b) \\
-                    &= a^2 + ab + ba + b^2 \\
-                    &= a^2 + 2ab + b^2
-                \end{align*}
-                
-                % Align at multiple places
-                \begin{align}
-                    f(x) &= (x+a)(x+b) \\
-                    &= x^2 + (a+b)x + ab \\
-                    &= x^2 + cx + d
-                \end{align}
+% Multiple equations (numbered)
+\begin{align}
+    E &= mc^2 \\
+    F &= ma
+\end{align}
+
+% Multiple equations (unnumbered)
+\begin{align*}
+    (a+b)^2 &= (a+b)(a+b) \\
+    &= a(a+b) + b(a+b) \\
+    &= a^2 + ab + ba + b^2 \\
+    &= a^2 + 2ab + b^2
+\end{align*}
+
+% Align at multiple places
+\begin{align}
+    f(x) &= (x+a)(x+b) \\
+    &= x^2 + (a+b)x + ab \\
+    &= x^2 + cx + d
+\end{align}
             \end{lstlisting}
         \end{column}
         
@@ -484,31 +484,31 @@ $\lim_{x \to 0} \frac{\sin x}{x} = 1$
     \begin{columns}
         \begin{column}{0.5\textwidth}
             \begin{lstlisting}
-                % Gather - centered, multi-line
-                \begin{gather}
-                    a_1 = b_1 + c_1\\
-                    a_2 = b_2 + c_2 + d_2
-                \end{gather}
-                
-                % Numbered array
-                \begin{array}{lcr}
-                    left & center & right\\
-                    x+y & x & y
-                \end{array}
-                
-                % Multiline equation
-                \begin{multline}
-                    a + b + c + d + e + f \\
-                    + i + j + k + l + m
-                \end{multline}
-                
-                % Subequations (hierarchical numbering)
-                \begin{subequations}
-                    \begin{align}
-                        a &= b + c\\
-                        d &= e + f
-                    \end{align}
-                \end{subequations}
+% Gather - centered, multi-line
+\begin{gather}
+    a_1 = b_1 + c_1\\
+    a_2 = b_2 + c_2 + d_2
+\end{gather}
+
+% Numbered array
+\begin{array}{lcr}
+    left & center & right\\
+    x+y & x & y
+\end{array}
+
+% Multiline equation
+\begin{multline}
+    a + b + c + d + e + f \\
+    + i + j + k + l + m
+\end{multline}
+
+% Subequations (hierarchical numbering)
+\begin{subequations}
+    \begin{align}
+        a &= b + c\\
+        d &= e + f
+    \end{align}
+\end{subequations}
             \end{lstlisting}
         \end{column}
         

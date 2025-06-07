@@ -8,4 +8,6 @@
 *.log
 *.vrb
 *.blg
-
+*.pdf
+*.lof
+*.lot

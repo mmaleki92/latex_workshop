@@ -19,17 +19,31 @@
     \end{columns}
 \end{frame}
 
-\begin{frame}{What is LaTeX?}
+\begin{frame}{Latex Creators}
     \begin{columns}
         \begin{column}{0.6\textwidth}
             \includegraphics[width=0.7\linewidth]{figs/knuth}
         \end{column}
         
         \begin{column}{0.4\textwidth}
-            \includegraphics[width=0.8\linewidth]{figs/Lamport}
+            \includegraphics[width=0.9\linewidth]{figs/Lamport}
         \end{column}
     \end{columns}
 \end{frame}
+
+
+\begin{frame}{Latex vs. Word?}
+	\begin{columns}
+		\begin{column}{0.6\textwidth}
+	\includegraphics[width=0.9\linewidth]{figs/latex_code}
+		\end{column}
+		
+		\begin{column}{0.4\textwidth}
+	\includegraphics[width=1.0\linewidth]{figs/latex_code1}
+		\end{column}
+	\end{columns}
+\end{frame}
+
 
 \begin{frame}{Why Use LaTeX?}
     \begin{columns}
@@ -151,6 +165,40 @@
             \end{itemize}
         \end{column}
     \end{columns}
+\end{frame}
+
+\begin{frame}{Comments and Useful Tips in \LaTeX}
+	
+	\begin{itemize}
+		\item \textbf{Comments} in \LaTeX: use the \texttt{\%} symbol
+		\begin{itemize}
+			\item Example: \texttt{\% This is a comment, it will not appear in the output}
+			\item Everything after \texttt{\%} on the same line is ignored.
+		\end{itemize}
+		\vspace{0.3cm}
+		
+		\item \textbf{Spacing}: multiple spaces and line breaks are treated as a single space.
+%		\begin{itemize}
+%			\item To force a new line, use \verb|\\|.
+%			\item For more vertical space: \verb|\vspace{length}|.
+%		\end{itemize}
+		\vspace{0.3cm}
+		
+		\item \textbf{Special Characters}: some symbols must be escaped.
+		\begin{itemize}
+			\item Examples: \texttt{\$ \% \_ \{ \} \# \& \textbackslash}.
+			\item To print them, use \texttt{\textbackslash} before the character, e.g., \texttt{\textbackslash\%}.
+		\end{itemize}
+		
+		\vspace{0.3cm}
+		\item \textbf{Good Practice}: use comments to document your source code.
+		\begin{itemize}
+			\item Helps collaborators and your future self.
+			\item Example: \texttt{\% This section introduces the main theorem.}
+		\end{itemize}
+%		
+	\end{itemize}
+	
 \end{frame}
 
 \begin{frame}[fragile]{The Preamble and Packages}
