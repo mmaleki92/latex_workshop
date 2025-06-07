@@ -309,16 +309,16 @@ $\derivative{f}$ and $\derivative[t]{f}$
                \end{lstlisting}
                \textcolor{red}{Typo or missing package}
                
-               \begin{lstlisting}[language={}]
-                    ! Missing $ inserted.
-                    l.15 The equation x^2
+\begin{lstlisting}[language={}]
+! Missing $ inserted.
+l.15 The equation x^2
                     
-               \end{lstlisting}
+\end{lstlisting}
                \textcolor{red}{Math command outside math mode}
                
                \begin{lstlisting}[language={}]
-                    ! LaTeX Error: Environment unknown 
-                    undefined.
+! LaTeX Error: Environment unknown 
+undefined.
                \end{lstlisting}
                \textcolor{red}{Typo or missing package for environment}
                
@@ -360,23 +360,23 @@ $\derivative{f}$ and $\derivative[t]{f}$
                     \textbf{Spacing in math expressions:}
                     
                     \begin{lstlisting}
-                         % Too cramped
-                         $f(x)=x^2+2x+1$
-                         
-                         % Better with spacing
-                         $f(x) = x^2 + 2x + 1$
-                         
-                         % Manual spacing when needed
-                         \begin{align*}
-                              y &= x^2 \\
-                              &= (x+1)(x-1) + 1 \\
-                              &= x^2 - 1 + 1 \\
-                              &= x^2
-                         \end{align*}
-                         
-                         % Spacing commands
-                         $a \, b \: c \; d \! e$
-                         $p \quad q \qquad r$
+% Too cramped
+$f(x)=x^2+2x+1$
+
+% Better with spacing
+$f(x) = x^2 + 2x + 1$
+
+% Manual spacing when needed
+\begin{align*}
+  y &= x^2 \\
+  &= (x+1)(x-1) + 1 \\
+  &= x^2 - 1 + 1 \\
+  &= x^2
+\end{align*}
+
+% Spacing commands
+$a \, b \: c \; d \! e$
+$p \quad q \qquad r$
                     \end{lstlisting}
                \end{column}
                
@@ -533,126 +533,53 @@ $\derivative{f}$ and $\derivative[t]{f}$
  
  \begin{document}
       
-      \\begin{frame}
-      \titlepage
-      \\end{frame}
-      
-      \\begin{frame}{Outline}
-      \tableofcontents
-      \\end{frame}
-      
-      \section{First Topic}
-      
-      \begin{frame}{Mathematics}
-           The equation:
-           \begin{equation}
-                E = mc^2
-           \end{equation}
-           
-           \begin{itemize}
-                \item<1-> First point
-                \item<2-> Second point
-                \item<3-> Third point
-           \end{itemize}
-           \\end{frame}
-           
-           \\end{document}
-                              \end{lstlisting}
-                         \end{column}
-                         
-                         \begin{column}{0.5\textwidth}
-                              \textbf{Key points:}
-                              \begin{itemize}
-                                   \item \texttt{\textbackslash documentclass\{beamer\}}
-                                   \item Slides are created with \texttt{frame} environment
-                                   \item Each frame needs a title with \texttt{\{title\}}
-                                   \item \texttt{<1->} notation for incremental display
-                                   \item All math commands work as usual
-                              \end{itemize}
-                              
-                              \textbf{Common elements:}
-                              \begin{itemize}
-                                   \item Title page with \texttt{\textbackslash titlepage}
-                                   \item Outline with \texttt{\textbackslash tableofcontents}
-                                   \item Sections and subsections
-                                   \item Math equations, tables, figures
-                              \end{itemize}
-                              
-                              
-                         \end{column}
-                    \end{columns}
-               \end{frame}
+\\begin{frame}
+\titlepage
+\\end{frame}
+
+\\begin{frame}{Outline}
+\tableofcontents
+\\end{frame}
+
+\section{First Topic}
+
+\begin{frame}{Mathematics}
+   The equation:
+   \begin{equation}
+        E = mc^2
+   \end{equation}
+   
+   \begin{itemize}
+        \item<1-> First point
+        \item<2-> Second point
+        \item<3-> Third point
+   \end{itemize}
+\\end{frame}
+   
+\\end{document}
+              \end{lstlisting}
+         \end{column}
+         
+         \begin{column}{0.5\textwidth}
+              \textbf{Key points:}
+              \begin{itemize}
+                   \item \texttt{\textbackslash documentclass\{beamer\}}
+                   \item Slides are created with \texttt{frame} environment
+                   \item Each frame needs a title with \texttt{\{title\}}
+                   \item \texttt{<1->} notation for incremental display
+                   \item All math commands work as usual
+              \end{itemize}
+              
+              \textbf{Common elements:}
+              \begin{itemize}
+                   \item Title page with \texttt{\textbackslash titlepage}
+                   \item Outline with \texttt{\textbackslash tableofcontents}
+                   \item Sections and subsections
+                   \item Math equations, tables, figures
+              \end{itemize}
+              
+              
+         \end{column}
+    \end{columns}
+\end{frame}
                
-               \begin{frame}{Workshop Summary}
-                    \textbf{What we've covered:}
-                    \begin{columns}
-                         \begin{column}{0.5\textwidth}
-                              \textbf{Hour 1: Getting Started}
-                              \begin{itemize}
-                                   \item LaTeX basics and workflow
-                                   \item Document structure
-                                   \item Basic text formatting
-                                   \item Lists and tables
-                              \end{itemize}
-                              
-                              \textbf{Hour 2: Mathematics}
-                              \begin{itemize}
-                                   \item Inline and display math
-                                   \item Math symbols and operators
-                                   \item Matrices and alignment
-                                   \item Multi-line equations
-                              \end{itemize}
-                         \end{column}
-                         
-                         \begin{column}{0.5\textwidth}
-                              \textbf{Hour 3: Document Structure}
-                              \begin{itemize}
-                                   \item Theorems and proofs
-                                   \item Figures and tables
-                                   \item Cross-referencing
-                                   \item Table of contents
-                              \end{itemize}
-                              
-                              \textbf{Hour 4: Advanced Topics}
-                              \begin{itemize}
-                                   \item Bibliography
-                                   \item Useful packages
-                                   \item Debugging
-                                   \item Beamer for presentations
-                              \end{itemize}
-                         \end{column}
-                    \end{columns}
-                    
-                    \begin{alertblock}{Next steps:}
-                         \begin{itemize}
-                              \item Practice regularly
-                              \item Explore advanced packages and features
-                              \item Use LaTeX for your research papers and presentations
-                              \item Join the LaTeX community
-                         \end{itemize}
-                    \end{alertblock}
-               \end{frame}
-               
-               % Find this section at the end of your document
-               \begin{frame}{Final Questions \& Discussion}
-                    \begin{center}
-                         \begin{tikzpicture}
-                              \node[draw, rounded corners, fill=blue!10, minimum width=8cm, minimum height=4cm] {
-                                   \begin{minipage}{7.5cm}
-                                        \begin{center}
-                                             \LARGE Thank You!
-                                             
-                                             \vspace{1cm}
-                                             
-                                             \large Questions?
-                                             
-                                             \vspace{0.5cm}
-                                             
-                                             \normalsize Contact information:\\ 
-                                             maleki.morteza92@gmail.com
-                                        \end{center}
-                                   \end{minipage}
-                              };
-                         \end{tikzpicture}
-                    \end{center}
-               \end{frame}

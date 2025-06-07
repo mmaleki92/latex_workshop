@@ -2,38 +2,46 @@
 %------------------------------------------------
 % Workshop Overview
 %------------------------------------------------
-\begin{frame}{Workshop Overview}
+
+\begin{frame}{Workshop Learning Path}
+	\begin{center}
+		\begin{tikzpicture}[node distance=1.5cm, auto]
+			% Define styles
+			\tikzstyle{block} = [rectangle, rounded corners, draw=blue!60, fill=blue!10, 
+			text width=5em, text centered, minimum height=3em]
+			\tikzstyle{line} = [draw, -latex']
+			
+			% Define blocks
+			\node [block] (basics) {1. LaTeX Basics};
+			\node [block, right=of basics] (math) {2. Math Typesetting};
+			\node [block, right=of math] (structure) {3. Document Structure};
+			\node [block, right=of structure] (advanced) {4. Advanced Topics};
+			
+			% Connect blocks
+			\path [line] (basics) -- (math);
+			\path [line] (math) -- (structure);
+			\path [line] (structure) -- (advanced);
+		\end{tikzpicture}
+	\end{center}
+	
 	\begin{columns}
 		\begin{column}{0.5\textwidth}
-			\textbf{Hour 1:} Getting Started
+			\textbf{Each section builds skills:}
 			\begin{itemize}
-				\item What is LaTeX?
-				\item Basic document structure
-				\item Text formatting
-			\end{itemize}
-			
-			\textbf{Hour 2:} Mathematical Typesetting
-			\begin{itemize}
-				\item Inline \& display math
-				\item Essential math commands
-				\item Matrices and equation alignment
+				\item Small, manageable concepts
+				\item Hands-on practice
+				\item Quick wins for motivation
 			\end{itemize}
 		\end{column}
 		
 		\begin{column}{0.5\textwidth}
-			\textbf{Hour 3:} Document Structure
-			\begin{itemize}
-				\item Theorems and proofs
-				\item Figures and tables
-				\item Cross-referencing
-			\end{itemize}
-			
-			\textbf{Hour 4:} Advanced Topics
-			\begin{itemize}
-				\item Bibliography basics
-				\item Useful packages
-				\item Debugging and resources
-			\end{itemize}
+			\textbf{Learning approach:}
+			\begin{enumerate}
+				\item See example
+				\item Understand code
+				\item Practice with template
+				\item Customize and extend
+			\end{enumerate}
 		\end{column}
 	\end{columns}
 \end{frame}
