@@ -11,3 +11,6 @@
 *.pdf
 *.lof
 *.lot
+*.ptd
+*.bak
+*.synctex
