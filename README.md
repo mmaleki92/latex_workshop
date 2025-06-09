@@ -12,6 +12,7 @@ https://arxiv.org/abs/2506.05342
 `latex_templates/Phd_Thesis_TMU_14040311`
 
 
+for the slide template compile with `LuaLatex`
 # references
 The base slide template is from this repository
 https://github.com/alirezaafzalaghaei/latex-persian-slide
