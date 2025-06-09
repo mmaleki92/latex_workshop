@@ -1,0 +1,59 @@
+\section{Introduction}
+\label{sec:intro}
+
+Referring expression segmentation (RES)~\cite{yu2016modeling, liu2023gres, hu2016segmentation} enables language-based object segmentation by relating a text prompt with a segmentation mask for the referred target, and can be generalized (\ie, GRES~\cite{liu2023gres}) for multiple targets.
+However, real-world applications, such as autonomous driving~\cite{shao2024lmdrive,cui2024survey}, robotics~\cite{gao2024physically,liu2024vision, xu2024survey}, augmented reality~\cite{konenkov2024vr}, and image editing~\cite{shen2024empowering, nguyen2023visual,guo2024prompthis}, require additional flexibility in the prompt. As exemplified in Figure~\ref{fig:teaser}, a user may want to specify a segmentation instruction that involves a \emph{relationship/comparison/interaction with a reference visual entity} (see red regions in the middle column). Expressing the reference via visual and text prompts together is usually preferred over text-only descriptions in such cases, because language may not be able to concisely and accurately locate the reference entity or describe its intricate characteristics in a complex image.
+
+In this work, we introduce a novel task of \textbf{omnimodal referring expression segmentation (ORES) with vision-language prompts} (Figure~\ref{fig:teaser}). For a given image, the system generates a \emph{group} of relevant masks that satisfy a user-specified instruction, which can be
+a) a text-only prompt describing a property (\eg, category, attribute, position, or their combination) of the targets, or
+b) a vision-enriched prompt that provides masks of reference entities and expresses a complex property involving the reference entities. 
+
+Unfortunately, \emph{it is not straightforward to extend existing models for this new challenge} (Table~\ref{tab:comparison}).
+Interactive segmentation models (\eg, SEEM~\cite{zou2024segment}) accept both text and visual prompts, but visual prompts only lead to the directly indicated entity rather than any related ones. In contrast, ORES aims to return a group of relevant masks based on the prompt, providing a more contextually cohesive response to the user's input. The visual prompt can be provided to conveniently describe a relationship between the target(s) and a reference visual entity that is difficult to describe verbally.
+Some grounding large multimodal models (LMMs) accept mask or region prompts~\cite{you2024ferret, rasheed2024glamm, zhang2024groundhog}, but they are designed for descriptive tasks~\cite{chen2023shikra, zellers2019recognition}, not for segmentation.
+Another limitation of most existing models (except GRES models~\cite{liu2023gres}) is that they generate only one target per query, even if multiple targets are available in the image.
+
+\begin{table}[ht]
+    \centering
+    \resizebox{\linewidth}{!}{%
+    \begin{tabular}{l|c c|c c}
+    \toprule
+    \multirow{2}{*}{Paradigm} & \multicolumn{2}{c|}{Prompt} & \multicolumn{2}{c}{Target} \\
+    & Text & Mask & Mask & Group \\
+    \midrule
+    Interactive segmentation~\cite{zou2024segment, kirillov2023segment} & $\circ$ & $\circ$ & \cmark & \xmark \\
+    RES~\cite{hu2016segmentation, yan2023universal}, GRES~\cite{liu2023gres} & \cmark & \xmark & \cmark & $\circ$ \\
+    LMM~\cite{liu2023visual, zhu2024minigpt, dai2023instructblip} & \cmark & \xmark & \xmark & \xmark \\
+    Grounding LMM~\cite{lai2024lisa, rasheed2024glamm, zhang2024groundhog} & \cmark & $\circ$ & \cmark & $\circ$ \\
+    \midrule
+    ORES (Ours) & \cmark & \cmark & \cmark & \cmark \\
+    \bottomrule
+    \end{tabular}}
+    \caption{\textbf{Comparison with existing paradigms.} Our omnimodal referring expression segmentation (ORES) task poses new challenges for all prior methods, including allowing mask-based visual prompts for reference visual entities and predicting a group of masks. \cmark: supported, $\circ$: partially supported, \xmark: unsupported.
+    }
+    \label{tab:comparison}
+\end{table}
+
+To address the ORES challenge, we adopt a simple yet effective approach that enables vision-language comprehension at the mask level. We \emph{extend segmentation foundation models~\cite{kirillov2023segment} with multimodal semantic understanding of segmentation masks} to leverage the strengths of both segmentation foundation models and LMMs:
+Segmentation foundation models, such as SAM~\cite{kirillov2023segment}, benefit from large-scale training data with fine-grained mask annotations, but have limited semantic understanding of the produced masks; LMMs excel at language-based comprehension of visual inputs, but datasets that can train LMMs for pixel-level grounding are much smaller in scale~\cite{lai2024lisa}.
+With such insight, we propose a framework, \textbf{Refer to Any Segmentation Mask Group (\ourmodel)}, to bridge the strengths of both sides. We first leverage the visual entity masking ability of segmentation models to propose a pool of candidate masks, which effectively covers the true targets, as we will show in Section~\ref{sec:expr-ablation}. Then, we introduce a \emph{mask-centric} LMM with enhanced semantic understanding of each visual entity encapsulated by candidate masks.
+
+Specifically, our \ourmodel framework
+a) employs a segmentation foundation model to propose candidate masks,
+b) extracts semantic-rich visual feature maps with an ensemble of visual backbones~\cite{tong2024cambrian},
+c) produces entity-level visual features by aggregating the features within each masked region to form \emph{mask tokens}, and
+d) aligns mask tokens with a language model through visual instruction tuning~\cite{liu2023visual}. Notably, reference masks in vision-enriched prompts can be naturally converted into mask tokens as part of the input.
+In this mask-centric formulation, each mask token is designed to encode one visual entity instead of a fixed-size image patch. This approach is more suitable for modeling the semantics of individual entities and their interactions.
+
+ORES requires the model to output a group of target masks, which is essentially a set prediction problem~\cite{rezatofighi2017deepsetnet} and is known to pose difficulties in model optimization~\cite{sun2021rethinking}. To facilitate optimization, we adopt a \emph{non-autoregressive decoding}~\cite{carion2020end, vinyals2015pointer} procedure in \ourmodel. Instead of letting the model output the selected masks one by one autoregressively~\cite{lai2024lisa, xia2024gsva, zhang2024groundhog} in the prediction stage, we feed all candidate mask tokens into the model and learn to perform binary classification on each contextualized mask token to decide whether this candidate should be included in the group or not. With this design, we avoid directly predicting a sequence of mask embeddings~\cite{lai2024lisa, zhang2024groundhog} and effectively convert the set prediction problem into an easy-to-optimize per-mask binary classification problem.
+
+To learn \ourmodel, we construct a large-scale instruction-tuning dataset \ourlargedata by automatically repurposing object-level annotations from existing datasets~\cite{lin2014microsoft, gupta2019lvis, krishna2017visual, yu2016modeling, liu2023gres}. Based on labeled categories, attributes, and relationships of objects, we create 2 million mask groups for visual instruction tuning.
+Furthermore, in order to align \ourmodel with user preferences and evaluate its performance in real-world applications, we collect a high-quality mask grouping dataset \ourgooddata by requesting expert human annotators to propose meaningful visual entity groups and select the corresponding masks.
+
+In summary, our main contributions include:
+\begin{itemize}[leftmargin=*, noitemsep, nolistsep]
+\item We introduce the omnimodal referring expression segmentation (ORES) task, which extends the classic RES and GRES tasks with vision-language prompts for more flexible and practical use cases.
+\item We propose the Refer to Any Segmentation Mask Group (\ourmodel) framework to strengthen the semantic understanding of segmentation masks with a mask-centric LMM and produce mask groups for vision-language prompts.
+\item We build a large-scale dataset \ourlargedata for instruction tuning of \ourmodel and curate \ourgooddata for alignment with human preferences and evaluation.
+\item Empirical results demonstrate state-of-the-art performance of our solution on the newly proposed ORES dataset, as well as classic RES and GRES benchmarks.
+\end{itemize}

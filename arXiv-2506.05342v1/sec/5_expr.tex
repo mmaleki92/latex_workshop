@@ -1,0 +1,160 @@
+\section{Experiments}
+\label{sec:expr}
+
+\begin{table*}[th]
+    \centering
+    \vspace{-2mm}
+    \begin{tabular}{l c c c c c c c c c}
+        \toprule
+        & \multicolumn{3}{c}{RefCOCO} & \multicolumn{3}{c}{RefCOCO+} & \multicolumn{2}{c}{RefCOCOg} & \multirow{2}{*}{Avg.} \\
+        \cmidrule(lr){2-4}\cmidrule(lr){5-7}\cmidrule(lr){8-9}
+        Model & val & testA & testB & val & testA & testB & val & test & \\
+        \midrule
+        ReLA~\cite{liu2023gres} & 73.8 & 76.5 & 70.2 & 66.0 & 71.0 & 57.7 & 65.0 & 66.0 & 68.3 \\
+        LISA$_\text{13B, FT}$~\cite{lai2024lisa} & 74.9 & 79.1 & 72.3 & 65.1 & 70.8 & 58.1 & 67.9 & 70.6 & 69.9 \\
+        MagNet~\cite{chng2024mask} & 76.6 & 78.3 & 72.2 & 68.1 & 73.6 & 61.8 & 67.8 & 69.3 & 71.0 \\
+        Groundhog$_\text{7B}$~\cite{zhang2024groundhog} & 78.5 & 79.9 & 75.7 & 70.5 & 75.0 & 64.9 & 74.1 & 74.6 & 74.2 \\
+        GSVA$_\text{13B, FT}$~\cite{xia2024gsva} & 79.2 & 81.7 & 77.1 & 70.3 & 73.8 & 63.6 & 75.7 & 77.0 & 74.8 \\
+        GLaMM$_\text{7B, FT}$~\cite{rasheed2024glamm} & 79.5 & 83.2 & 76.9 & 72.6 & 78.7 & 64.6 & 74.2 & 74.9 & 75.6 \\
+        u-LLaVA$_\text{7B}$~\cite{xu2024ullava} & 80.4 & 82.7 & 77.8 & 72.2 & 76.6 & 66.8 & 74.8 & 75.6 & 75.9 \\
+        SAM4MLLM$_\text{8B}$~\cite{chen2024sam4mllm} & 79.8 & 82.7 & 74.7 & 74.6 & \bf 80.0 & 67.2 & 75.5 & 76.4 & 76.4 \\
+        UNINEXT-H~\cite{yan2023universal} & 82.2 & 83.4 & 81.3 & 72.5 & 76.4 & 66.2 & 74.6 & 76.4 & 76.6 \\
+        PSALM$_\text{1.3B}$~\cite{zhang2024psalm} & \bf 83.6 & \bf 84.7 & \bf 81.6 & 72.9 & 75.5 & 70.1 & 73.8 & 74.4 & 77.1 \\
+        \midrule
+        \ourmodel$_\text{13B, Co-DETR}$ (Ours) & 79.4 & 82.6 & 75.9 & 72.2 & 77.3 & 64.7 & 73.2 & 74.5 & 75.0 \\
+        \ourmodel$_\text{13B, Co-DETR, RES-FT}$ (Ours) & 81.0 & 83.5 & 79.0 & \bf 75.1 & \bf 80.0 & \bf 70.3 & \bf 76.0 & \bf 77.5 & \bf 77.8 \\
+        \bottomrule
+    \end{tabular}
+    \caption{\textbf{Results on referring expression segmentation (RES).} With Co-DETR, an instance segmentation model specialized for MS-COCO (retrained to avoid data leakage), we establish new state of the art in RES.
+    Models that are finetuned again for RES after training on mixed data are labeled with the subscript $_\text{FT}$.}
+    \label{tab:res}
+    \vspace{-2mm}
+\end{table*}
+
+\begin{table*}[ht]
+    \centering
+    \resizebox{\linewidth}{!}{%
+    \begin{tabular}{l c c c c c c c c c c}
+        \toprule
+        & \multicolumn{3}{c}{val} & \multicolumn{3}{c}{testA} & \multicolumn{3}{c}{testB} & Avg. \\
+        \cmidrule(lr){2-4}\cmidrule(lr){5-7}\cmidrule(lr){8-10}
+        Model & gIoU & cIoU & N-acc. & gIoU & cIoU & N-acc. & gIoU & cIoU & N-acc. & cIoU \\
+        \midrule
+        LAVT~\cite{yang2022lavt} & 58.40 & 57.64 & 49.32 & 65.90 & 65.32 & 49.25 & 55.83 & 55.04 & 48.46 & 59.33 \\
+        ReLA~\cite{liu2023gres} & 63.60 & 62.42 & 56.37 & 70.03 & 69.26 & 59.02 & 61.02 & 59.88 & 58.40 & 63.85 \\
+        LISA$_\text{13B, FT}$~\cite{lai2024lisa} & 65.24 & 63.96 & 57.49 & 69.99 & 71.00 & 55.43 & 62.11 & 62.29 & 56.34 & 65.75 \\
+        HDC~\cite{luo2024hdc} & 68.28 & 65.42 & 63.38 & 72.52 & 71.60 & 65.29 & 63.85 & 62.79 & 60.68 & 66.60 \\
+        GSVA$_\text{13B, FT}$~\cite{xia2024gsva} & 70.04 & 66.38 & 66.02 & 73.29 & 72.79 & \bf 64.72 & 65.45 & 63.20 & 62.47 & 67.46 \\
+        SAM4MLLM$_\text{7B}$~\cite{chen2024sam4mllm} & 71.86 & 67.83 & 66.08 & 74.15 & 72.22 & 63.92 & 65.29 & 63.42 & 59.99 & 67.82 \\
+        \midrule
+        \ourmodel$_\text{13B, Co-DETR}$ (Ours) & 68.86 & 64.44 & 57.19 & 74.83 & 74.40 & 54.86 & 66.74 & 64.51 & 54.13 & 67.78 \\
+        \ourmodel$_\text{13B, Co-DETR, GRES-FT}$ (Ours) & \bf 74.64 & \bf 70.48 & \bf 69.05 & \bf 77.45 & \bf 76.99 & 64.62 & \bf 69.42 & \bf 67.90 & \bf 62.92 & \bf 71.79 \\
+        \bottomrule
+    \end{tabular}}
+    \caption{\textbf{Results on gRefCOCO for generalized referring expression segmentation (GRES).} Our approach achieves the best overall performance compared with baselines.}
+    \label{tab:gres}
+    \vspace{-2mm}
+\end{table*}
+
+In this section, we thoroughly test \ourmodel in various tasks, including omnimodal referring expression segmentation (ORES, Section~\ref{sec:expr-ours}), and classic and generalized referring expression segmentation (RES and GRES, Section~\ref{sec:expr-res}). We then analyze the candidate mask quality and design choices of \ourmodel (Section~\ref{sec:expr-ablation}), and finally demonstrate its applications (Section~\ref{sec:expr-demo}).
+Following prior practice in RES, we mainly consider cumulative/generalized intersection over union (cIoU/gIoU) metrics; for GRES we also report the accuracy of identifying ``no-target'' samples (N-acc.)~\cite{liu2023gres}.
+
+Due to limited space, we include a) additional results on comparison with SEEM~\cite{zou2024segment}, finetuning GSVA~\cite{xia2024gsva} on our data, and converting ORES visual prompts into language, b) ablation study on mask tokenization and LLM scales, and c) qualitative results in the supplementary material.
+
+\subsection{Omnimodal RES}
+\label{sec:expr-ours}
+Our new ORES task poses new challenges to existing GRES models, because it uses mask-based visual prompts to describe relationships with reference entities. In Table~\ref{tab:ourgooddata}, we compare \ourmodel (both before and after finetuning on \ourgooddata) based on off-the-shelf SAM~\cite{kirillov2023segment} for proposing candidate masks, with state-of-the-art GRES models~\cite{liu2023gres, zhang2024psalm, xia2024gsva}. Unlike all GRES baselines, \ourmodel is able to accept reference masks and process all prompts in \ourgooddata, demonstrating a stronger prompting flexibility. Meanwhile, for text-only prompts, our results show significantly improved generalizability. Further finetuning \ourmodel on \ourgooddata brings more performance gains, especially enhancing the ability for understanding reference masks. Quantitative results are shown in Figure~\ref{fig:qual} in the supplementary material.
+
+\subsection{RES and GRES}
+\label{sec:expr-res}
+Since our new task extends the classic and generalized referring expression segmentation (RES and GRES), \ourmodel can readily tackle both earlier tasks. We evaluate \ourmodel on RefCOCO, RefCOCO+, RefCOCOg, and gRefCOCO datasets~\cite{yu2016modeling, liu2023gres}, and compare it with prior state-of-the-art models~\cite{lai2024lisa, chng2024mask, zhang2024groundhog, rasheed2024glamm, xu2024ullava, chen2024sam4mllm, zhang2024psalm, yang2022lavt, luo2024hdc, liu2023gres, yan2023universal}. The segmentation modules in prior models are finetuned for the RES and GRES tasks. Therefore, to ensure a fair comparison, we employ a model trained for MS-COCO instance segmentation, Co-DETR~\cite{zong2023detrs}. To avoid data leakage, we retrain the Co-DETR instance segmentation model on MS-COCO excluding all RES/GRES validation and test images. As \ourmodel is not limited to a specific segmentation model, we can produce candidate masks with Co-DETR and seamlessly apply \ourmodel to its proposed masks.
+
+As shown in Tables~\ref{tab:res} and \ref{tab:gres}, \ourmodel demonstrates competitive results on both RES and GRES. Following prior models that are also trained on mixed data~\cite{lai2024lisa, rasheed2024glamm, xia2024gsva}, we further finetune \ourmodel on RES/GRES training data to adapt \ourmodel for these tasks, which leads to state-of-the-art performance.
+
+\subsection{Analysis and Ablation Study}
+\label{sec:expr-ablation}
+\noindent\textbf{Quality of candidate masks.} \ourmodel extends existing segmentation models with complex vision-language interactions. To validate that the segmentation models can propose candidate masks that sufficiently cover the referred targets, we analyze the proposed masks by selecting the ones with the hightest IoU with ground-truth masks and computing their cIoU on all three tasks. As shown in Table~\ref{tab:oracle}, \emph{even without finetuning the segmentation models on the RES tasks}, the best candidates achieve significantly better cIoU than existing models, and the proposals indeed include most of the true targets (over 85 cIoU). By addressing the challenge of semantically understanding the high-quality candidate masks, \ourmodel achieves the best final performance.
+
+{
+\setlength{\tabcolsep}{2pt}
+\begin{table}[ht]
+    \centering
+    \vspace{-2mm}
+    \resizebox{\linewidth}{!}{%
+    \begin{tabular}{l c l c l c}
+    \toprule
+    \multicolumn{2}{c}{ORES} & \multicolumn{2}{c}{RES} & \multicolumn{2}{c}{GRES} \\
+    \cmidrule(lr){1-2}\cmidrule(lr){3-4}\cmidrule(lr){5-6}
+    Model & cIoU & Model & cIoU & Model & cIoU \\
+    \midrule
+    \multicolumn{6}{l}{\cellcolor{cellgray}\textit{Previous state of the art}} \\
+    GSVA$_\text{13B}$ & 49.55 & PSALM$_\text{1.3B}$ & 77.1 & SAM4MLLM$_\text{7B}$ & 67.82 \\
+    \multicolumn{6}{l}{\cellcolor{cellgray}\textit{Best candidates proposed by segmentation models in \ourmodel}} \\
+    SAM$_\text{Oracle}$ & 86.39 & Co-DETR$_\text{Oracle}$ & 87.2 & Co-DETR$_\text{Oracle}$ & 87.60 \\
+    \multicolumn{6}{l}{\cellcolor{cellgray}\textit{Final performance of \ourmodel (Ours)}} \\
+    \ourmodel$_\text{13B, SAM}$ & 74.59 & \ourmodel$_\text{13B, Co-DETR}$ & 77.8 & \ourmodel$_\text{13B, Co-DETR}$ & 71.79 \\
+    \bottomrule
+    \end{tabular}}
+    \caption{\textbf{Analysis of candidate mask quality.} ``Oracle'' denotes a setting where the ground-truth targets are known and the closest candidates are chosen. Compared with previous models, the best candidates proposed by the segmentation models in \ourmodel already obtain much higher mask quality, even without finetuning on RES tasks. Building upon the high-quality candidates, \ourmodel delivers the strongest final performance. }
+    \label{tab:oracle}
+    \vspace{-2mm}
+\end{table}
+}
+
+Due to limited computation, models in the following ablation are only trained on 0.5M samples of \ourlargedata and tested on our ORES dataset \ourgooddata.
+
+\noindent\textbf{Non-autoregressive \vs autoregressive decoding.} \ourmodel uses a simple yet effective decoding strategy, where the LLM inputs are directly from the candidate mask tokens rather than the previously predicted tokens. We compare our non-autoregressive formulation with the traditional autoregressive paradigm adopted by previous LMMs~\cite{lai2024lisa, xia2024gsva, zhang2024groundhog}. The autoregressive baseline learns to predict continuous mask embeddings of the selected masks in a sequential manner, and we collect the candidate masks whose embeddings are closest to these predicted embeddings as the output. Table~\ref{tab:ar} shows that our non-autoregressive formulation improves performance and enables more efficient inference.
+
+\begin{table}[ht]
+    \centering
+    \begin{tabular}{l c c}
+        \toprule
+        Decoding Paradigm & cIoU$\uparrow$ & Latency$\downarrow$ \\
+        \midrule
+        Autoregressive & 45.34 & 2.13 \\
+        \cellcolor{cellgray}Non-Autoregressive & \cellcolor{cellgray}\bf 53.75 & \cellcolor{cellgray}\bf 0.56 \\
+        \bottomrule
+    \end{tabular}
+    \caption{\textbf{Comparison between decoding paradigms.} Our non-autoregressive formulation leads to more effective training and more efficient inference.}
+    \label{tab:ar}
+    \vspace{-2mm}
+\end{table}
+
+\noindent\textbf{Visual encoders.} We use four visual encoders as a feature ensemble for mask tokenization. In Table~\ref{tab:encoder}, we compare \ourmodel with its variants that encode mask tokens with a single encoder, as well as the previously best model GSVA~\cite{xia2024gsva}. \emph{Even with one single encoder}, \ourmodel outperforms GSVA. Combining all four encoders leads to the best results.
+
+{
+\setlength{\tabcolsep}{2pt}
+\begin{table}[ht]
+    \centering
+    \vspace{-2mm}
+    \resizebox{\linewidth}{!}{%
+    \begin{tabular}{l c c c}
+        \toprule
+        Model & w/o \scriptsize\texttt{\textless mask-ref\textgreater} & w/ \scriptsize\texttt{\textless mask-ref\textgreater} & Overall cIoU \\
+        \midrule
+        GSVA$_\text{13B}$~\cite{xia2024gsva} & 49.55 & - & - \\
+        \midrule
+        \ourmodel$_\text{13B, CLIP, SAM}$ & \bf 58.13 & 37.61 & 52.44 \\
+        \ourmodel$_\text{13B, ConvCLIP, SAM}$ & 56.83 & 44.06 & 53.53 \\
+        \ourmodel$_\text{13B, SigLIP, SAM}$ & 54.24 & 32.09 & 48.07 \\
+        \ourmodel$_\text{13B, DINOv2, SAM}$ & 57.40 & 21.70 & 47.71 \\
+        \cellcolor{cellgray}\ourmodel$_\text{13B, Ensemble, SAM}$ & \cellcolor{cellgray}57.73 & \cellcolor{cellgray}\bf 44.47 & \cellcolor{cellgray} \bf 53.75 \\
+        \bottomrule
+    \end{tabular}}
+    \caption{\textbf{Comparison of \ourmodel with different visual encoders.} Our ensemble of four visual encoders yields the best visual features for mask tokenization.}
+    \label{tab:encoder}
+    \vspace{-2mm}
+\end{table}
+}
+
+\subsection{Applications}
+\label{sec:expr-demo}
+By addressing the ORES task, \ourmodel improves a range of applications requiring fine-grained localization of multiple visual entities. As shown in Figure~\ref{fig:demo}, the predicted segmentation mask groups can be seamlessly integrated with generative models (\eg, Adobe Photoshop Generative Fill~\cite{adobephotoshop}) to \emph{remove or edit multiple targets} conveniently and efficiently.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=\linewidth]{fig/demo.pdf}
+    \caption{\textbf{Fine-grained image content manipulation enabled by our approach.} In each row we visualize the original image, the predicted segmentation masks, and the object removal (first two rows) or editing (last two rows) results. Best viewed on an electronic device with zoom-in functionality.}
+    \label{fig:demo}
+    \vspace{-4mm}
+\end{figure}

@@ -1,0 +1,71 @@
+\section{Data for Model Training and Evaluation}
+\label{sec:data}
+
+To effectively train and evaluate \ourmodel, we build two datasets: \ourlargedata, which is a dataset containing 2 million samples automatically generated from existing datasets with object-level annotations, and \ourgooddata, which is a smaller, high-quality and diverse dataset annotated by human annotators.
+
+\subsection{\ourlargedata: Data Repurposed for Visual Instruction Tuning}
+Each training sample of the mask grouping task consists of an image, a set of candidate masks, a prompt (described by free-form text and optional reference masks), and a target mask group containing an arbitrary number of masks. No existing datasets provide all of these elements. To build \ourlargedata, we convert object-level annotations into the mask grouping format with templates. Table~\ref{tab:ourlargedata} summarizes the sources of each component in \ourlargedata. More details are in the supplementary material.
+
+{
+\setlength{\tabcolsep}{2pt}
+\begin{table}[th]
+    \centering
+    \resizebox{\linewidth}{!}{%
+    \begin{tabular}{l c c c c c c c c}
+        \toprule
+        & \multicolumn{4}{c}{w/o \texttt{\textless mask-ref\textgreater}} & \multicolumn{4}{c}{w/ \texttt{\textless mask-ref\textgreater}} \\
+        \cmidrule(lr){2-5}\cmidrule(lr){6-9}
+        Source & Cat. & Att. & Pos. & Free. & Cat. & Att. & Pos. & Free. \\
+        \midrule
+        MS-COCO+LVIS~\cite{lin2014microsoft, gupta2019lvis} & 166K & - & - & - & 166K & - & - & - \\
+        VG~\cite{krishna2017visual} & 224K & 149K & 132K & - & 224K & 149K & 392K & 34K \\
+        (G)RES~\cite{yu2016modeling, liu2023gres} & - & - & - & 474K & - & - & - & - \\
+        \bottomrule
+    \end{tabular}}
+    \caption{\textbf{Composition of \ourlargedata.} We collect mask groups based on categories, attributes, positions, and other free-form descriptions by converting object-level annotations from MS-COCO~\cite{lin2014microsoft}, LVIS~\cite{gupta2019lvis}, Visual Genome~\cite{krishna2017visual}, and (generalized) referring expression segmentation datasets~\cite{yu2016modeling, liu2023gres}.}
+    \label{tab:ourlargedata}
+\end{table}
+}
+
+\begin{table*}[th]
+    \centering
+    \vspace{-2mm}
+    \begin{tabular}{l c c c c c c}
+        \toprule
+        & \multicolumn{2}{c}{w/o \texttt{\textless mask-ref\textgreater}} & \multicolumn{2}{c}{w/ \texttt{\textless mask-ref\textgreater}} & \multicolumn{2}{c}{Overall} \\
+        \cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule(lr){6-7}
+        Model & gIoU & cIoU & gIoU & cIoU & gIoU & cIoU \\
+        \midrule
+        ReLA~\cite{liu2023gres} & 34.93 & 43.22 & - & - & - & - \\
+        PSALM$_\text{1.3B}$~\cite{zhang2024psalm} & 36.92 & 37.33 & - & - & - & - \\
+        GSVA$_\text{13B}$~\cite{xia2024gsva} & 41.98 & 49.55 & - & - & - & - \\
+        \midrule
+        \ourmodel$_\text{13B, SAM}$ (Ours) & 55.82 & 60.12 & 35.91 & 37.77 & 50.98 & 53.93 \\
+        \ourmodel$_\text{13B, SAM, ORES-FT}$ (Ours) & \bf 66.71 & \bf 74.59 & \bf 58.72 & \bf 68.77 & \bf 64.77 & \bf 73.13 \\
+        \bottomrule
+    \end{tabular}
+    \caption{\textbf{Results on our ORES dataset \ourgooddata.} Existing GRES models are unable to process reference masks as part of the input prompt (`-' in the table). Given text-only prompts, \ourmodel shows significantly stronger performance, which can be further improved by ORES finetuning. For LLM-based models, we mark the LLM scales in the subscript.}
+    \vspace{-2mm}
+    \label{tab:ourgooddata}
+\end{table*}
+
+\noindent\textbf{Category-based groups.} Given categorical annotations, we find same-category objects in each image, and form prompts in templates like ``Select all \texttt{\textless category\textgreater}'' or ``Segment everything of the same class as \texttt{\textless mask-ref\textgreater}.'' These groups originate from MS-COCO~\cite{lin2014microsoft}, LVIS~\cite{gupta2019lvis}, and Visual Genome~\cite{krishna2017visual}. LVIS uses the same images as MS-COCO but annotates more object categories with improved mask quality. Therefore, we merge MS-COCO and LVIS annotations before proposing category-based groups.
+
+\noindent\textbf{Attribute-based groups.} Visual Genome~\cite{krishna2017visual} includes annotations for object attributes (\eg, colors, materials). Similar to category-based groups, we collect objects with the same attribute and formulate groups like ``Select all \texttt{\textless attribute\textgreater} objects'' or ``Find all the objects with the same attribute as \texttt{\textless mask-ref\textgreater} in the image.''
+
+\noindent\textbf{Position-based groups.} The bounding box annotations provide positional information of objects. We form groups based on absolute positions (\eg, ``Locate all the items on the left side of the image.'') or relative positions (\eg, ``Find all the objects above \texttt{\textless mask-ref\textgreater}.'') by comparing the coordinates of the bounding boxes.
+
+\begin{figure}[th]
+    \centering
+    \includegraphics[width=\linewidth]{fig/sample.pdf}
+    \caption{\textbf{Examples of \ourgooddata.} Diverse vision-language prompts are included, involving object categories, attributes, positions, comparisons, interactions, \etc. Best viewed on an electronic device with zoom-in functionality.}
+    \vspace{-4mm}
+    \label{fig:sample}
+\end{figure}
+
+\noindent\textbf{Other free-form prompts.} In addition to the mask grouping criteria introduced above, we include groups with diverse free-form descriptions. RES (RefCOCO, RefCOCO+, and RefCOCOg~\cite{yu2016modeling}) and GRES (gRefCOCO~\cite{liu2023gres}) datasets contain free-form phrases for localizing specific objects, which can be converted into text-only prompts and mask groups (\eg, ``Select the \texttt{\textless expression\textgreater} in the image.''). Visual Genome~\cite{krishna2017visual} contain annotations for object relationships. When there are multiple objects sharing the same relationship with the same subject, we group these objects (\eg, ``Select all objects that \texttt{\textless mask-ref\textgreater} \texttt{\textless relation\textgreater}.'').
+
+\noindent\textbf{Avoiding data contamination.} The validation and test sets of RES/GRES datasets use images from MS-COCO and Visual Genome training data. To avoid data contamination, we exclude such images from \ourlargedata.
+
+\subsection{\ourgooddata: Human-Annotated Data for Finetuning and Evaluation}
+Although \ourlargedata is large enough for instruction tuning, its mask groups in pre-defined templates cannot cover all possible criteria that human users may use for grouping, and may introduce noises due to inaccurate annotations in the source data. Therefore, to further improve and evaluate the generalizability of \ourmodel, we manually annotate a high-quality dataset \ourgooddata (visualized in Figure~\ref{fig:sample}). We start from EntitySeg~\cite{qi2023high}, an image segmentation dataset containing high-resolution images and mask annotations for category-agnostic visual entities within images. Then, human annotators inspect the images and masks, and annotate several mask groups by proposing a reasonable vision-language prompt and labeling the IDs of masks that should be included. Our quality check ensures that the proposed mask groups are agreed upon by different users. In total, 100,299 mask groups are annotated. Finally, we split \ourgooddata into 96,697 samples over 18,368 images for finetuning, and 3,599 samples over 661 images for evaluation. 28\% of the samples include reference mask(s) in their prompts.

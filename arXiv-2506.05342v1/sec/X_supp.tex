@@ -1,0 +1,155 @@
+\clearpage
+\appendix
+\setcounter{section}{0}
+\setcounter{figure}{0}
+\setcounter{table}{0}
+\renewcommand{\thesection}{\Alph{section}}
+\renewcommand{\thefigure}{\Alph{figure}}
+\renewcommand{\thetable}{\Alph{table}}
+
+\noindent In this appendix, we provide additional details on the implementation of our model \ourmodel (Section~\ref{sec:supp-impl}) and our datasets \ourlargedata (Section~\ref{sec:supp-ourlargedata}) and \ourgooddata (Section~\ref{sec:supp-ourgooddata}). Furthermore, we include additional experiments (Section~\ref{sec:supp-expr}), ablation study (Section~\ref{sec:supp-ablation}), and qualitative results (Section~\ref{sec:supp-qual}).
+
+\section{Implementation Details}
+\label{sec:supp-impl}
+\noindent\textbf{Visual encoder ensemble.} Following Cambrian-1~\cite{tong2024cambrian}, we use four visual encoders: OpenAI CLIP ViT-L/14@336~\cite{radford2021learning}, OpenCLIP ConvNeXt-XXL@1024~\cite{liu2022convnet, cherti2023reproducible}, SigLIP ViT-SO400M/14@384~\cite{zhai2023sigmoid}, and DINOv2 ViT-L/14@518~\cite{oquab2023dinov2}. In addition, we provide 2D sinusoidal position embeddings~\cite{dosovitskiy2021image} of shape $32\times 32$ and treat them as visual features produced by a fifth visual encoder. All input images are padded to an aspect ratio of $1:1$, resized to the input size required by each encoder (up to $1,024 \times 1,024$), and fed into each encoder. All visual encoders are frozen during the entire training process.
+
+\noindent\textbf{Mask projector and its pretraining.} We initialize \ourmodel with weights from LLaVA-1.5-13B~\cite{liu2024improved}. The mask projector is a two-layer multilayer perceptron (MLP) that projects the concatenated mask-level visual features to the language model space. As a new module, the mask projector is randomly initialized. Before training the whole \ourmodel model, we first pretrain the mask projector on the LLaVA-Pretrain dataset~\cite{liu2023visual, liu2024improved} with a modified pretext task. We use SAM~\cite{kirillov2023segment} to generate a set of masks per image and replace the original image tokens with our mask tokens for the image captioning objective. To correctly understand and describe a given image, the model needs to align the mask tokens with the LLM feature space. During the pretraining stage, we set the batch size to 128 and set the base learning rate to $1\times 10^{-3}$. We train on LLaVA-Pretrain for 1 epoch.
+
+\noindent\textbf{Visual instruction tuning.} After pretraining the mask projector, the entire \ourmodel model (except the visual encoders) is trained in the visual instruction tuning stage. A binary selection classifier (two-layer MLP) is randomly initialized. Then, we minimize a binary cross-entropy loss. Due to the imbalanced distribution of positive/negative samples (usually only a few masks should be selected from a large pool of candidate masks), we assign a loss weight of $5.0$ to positive candidates. During the visual instruction tuning stage, we set the batch size to 128 and set the base learning rate to $2\times 10^{-5}$. We train on \ourlargedata for 1 epoch.
+
+\noindent\textbf{Further finetuning.} For improved performance on specialized tasks (ORES, RES, and GRES), we further finetune \ourmodel on these tasks separately. We set the batch size to 64 and use the same base learning rate as instruction tuning. Due to different data scales, we finetune \ourmodel on ORES or GRES for 4 epochs, and finetune \ourmodel on RES for 2 epochs.
+
+\noindent\textbf{Optimization and computation.} Following Vicuna~\cite{vicuna2023} and LLaVA~\cite{liu2023visual}, we use a cosine learning rate schedule with warm-up in each training stage. The optimizer is Adam~\cite{kingma2015adam} with zero weight decay. All of our training is performed on 8 NVIDIA A100-80GB GPUs. The pretraining stage requires about 4 hours. The visual instruction tuning stage on \ourlargedata requires about 1.5 days. Further finetuning for ORES, RES, or GRES requires another 1.5 days.
+
+\section{Construction of \ourlargedata}
+\label{sec:supp-ourlargedata}
+\ourlargedata is converted from object-level annotations of existing image datasets. The sources of \ourlargedata are detailed as follows.
+
+\noindent\textbf{MS-COCO~\cite{lin2014microsoft} and LVIS~\cite{gupta2019lvis}.} Since LVIS uses the same images as MS-COCO, we merge their annotations by combining instances with overlapping masks. For each image, we find object categories with at least 2 object annotations and create a category-based mask group with or without reference masks.
+
+\noindent\textbf{Visual Genome~\cite{krishna2017visual}.} Because mask annotations are not provided by Visual Genome, we first use SAM~\cite{kirillov2023segment} to produce segmentation masks based on bounding box annotations and filter low-quality masks. We create category-based mask groups and attribute-based mask groups, similar to MS-COCO and LVIS. Furthermore, we compare the coordinates of bounding boxes to decide if an object is on the left side of, on the right side of, on the top of, or at the bottom of the entire image or another object, and then produce position-based mask groups with or without reference masks. In addition, Visual Genome provides annotations of relationships, which are triplets of (subject, relationship, object). In each image, we find triplets with a) the same subject and the same relationship but different objects, or b) the same object and the same relationship but different subjects, and formulate mask groups accordingly.
+
+\noindent\textbf{RES~\cite{yu2016modeling} and GRES~\cite{liu2023gres}.} The RES datasets, including RefCOCO, RefCOCO+, and RefCOCOg, provide correspondences between a referring expression and an object, which can be directly converted into a single-mask group. The GRES dataset, gRefCOCO, contains referring expressions and their target object sets, and they can be converted into mask groups including a varying number (zero, one, or more than one) of masks. To avoid data contamination, we exclude images that are used for RES/GRES validation or test sets from the entire \ourlargedata dataset.
+
+\begin{figure}[th]
+    \centering
+    \includegraphics[width=\linewidth]{fig/dist.pdf}
+    \caption{\textbf{Prompt type distribution in \ourgooddata.} A grouping criterion may involve the categories, the attributes, the absolute or relative positions, the cross-entity comparisons, and even their combination.}
+    \label{fig:ourgooddata}
+\end{figure}
+
+\section{Statistics of \ourgooddata}
+\label{sec:supp-ourgooddata}
+\ourgooddata extends the existing mask annotations in EntitySeg~\cite{qi2023high} with vision-language prompts and mask groups. Human annotators are encouraged to propose creative and meaningful entity groups, so the prompts are very diverse and difficult to categorize. Nevertheless, we provide some statistics for better understanding of \ourgooddata: 28\% of the samples include reference masks in the prompts, and the other 72\% do not contain reference masks. In Figure~\ref{fig:ourgooddata}, we visualize the distribution of the prompts based on their grouping criterion. Note that each prompt may be labeled with multiple types. For example, the prompt ``All paper products smaller than \texttt{\textless mask-ref\textgreater}'' simultaneously involves a category (``paper product''), an attribute (``small''), and a comparison (``smaller than \texttt{\textless mask-ref\textgreater}'').
+
+\section{Additional Experiment Results}
+\label{sec:supp-expr}
+
+\noindent\textbf{SEEM on ORES.} As introduced in the main paper, though some interactive segmentation models such as SEEM~\cite{zou2024segment} are able to take text and visual prompts simultaneously, their visual prompts can only be directly used for locating the target object. In contrast, visual prompts in ORES are often for a reference object that has a certain relationship with the target. In Figure~\ref{fig:seem}, we visualize examples of prompting SEEM with both text and visual prompts and compare the results with our model \ourmodel. SEEM outputs masks directly corresponding to the visual prompt, instead of correctly understanding the mixed prompt as required by the ORES task. In contrast, our model \ourmodel successfully selects the correct group of masks.
+
+\begin{figure}[th]
+    \centering
+    \includegraphics[width=\linewidth]{fig/seem.pdf}
+    \caption{\textbf{SEEM, a representative interactive segmentation model, fails in our ORES task.} Instead of understanding the relationship (\eg, ``on the reference entity'') specified by the vision-language prompt, SEEM~\cite{zou2024segment} simply produces a mask that overlaps with the visual prompt. In contrast, our proposed \ourmodel model can correctly understand the vision-language prompt.}
+    \label{fig:seem}
+\end{figure}
+
+\noindent\textbf{Finetuning GSVA on our data.} To understand the impact of training data, we finetune GSVA~\cite{xia2024gsva}, the previously best GRES model, on our data and evaluate its ORES performance on \ourgooddata. As shown in Table~\ref{tab:gsva}, finetuning GSVA on samples from \ourlargedata does not yield better performance than its original data recipe, \ie, finetuning on GRES data, and is significantly worse than \ourmodel trained on the same data. Finetuning \ourmodel on the training split of \ourgooddata also leads to better ORES performance than GSVA. Note that training on MaskGroups-2M does not necessarily provide an advantage for performance on MaskGroups-HQ due to the domain gap: The samples in \ourlargedata are constructed from fixed templates, while the samples from \ourgooddata are written by human annotators in any free form. Therefore, the stronger performance of our model \ourmodel should be attributed more to its model design.
+
+\begin{table}[t!]
+    \centering
+    \resizebox{\linewidth}{!}{%
+    \begin{tabular}{l l c c}
+        \toprule
+        & & \multicolumn{2}{c}{w/o \texttt{\textless mask-ref\textgreater}} \\
+        \cmidrule(lr){3-4}
+        Model & Data & gIoU & cIoU \\
+        \midrule
+        GSVA$_\text{13B}$~\cite{xia2024gsva} & GRES (original) & 41.98 & 49.55 \\
+        GSVA$_\text{13B}$~\cite{xia2024gsva} & 0.5M of \ourlargedata & 41.21 & 36.40 \\
+        GSVA$_\text{13B}$~\cite{xia2024gsva} & \ourgooddata & 56.79 & 70.11 \\
+        \midrule
+        \ourmodel$_\text{13B, SAM}$ (Ours) & 0.5M of \ourlargedata & 54.76 & 57.73 \\
+        \ourmodel$_\text{13B, SAM, ORES-FT}$ (Ours) & \ourgooddata & \bf 66.71 & \bf 74.59 \\
+        \bottomrule
+    \end{tabular}}
+    \caption{\textbf{Results of finetuning GSVA on our data.} Finetuning GSVA~\cite{xia2024gsva}, the previously best GRES model, on samples of \ourlargedata, does not achieve better ORES performance than the GSVA model trained with its original data recipe. When finetuned on the training samples of \ourgooddata, \ourmodel significantly outperforms GSVA in the ORES task.}
+    \label{tab:gsva}
+\end{table}
+
+\noindent\textbf{Converting visual prompts into language.} In the main paper, we have discussed the limitations of existing GRES models~\cite{liu2023gres, xia2024gsva, zhang2024psalm}. They cannot take visual prompts that represent reference entities as inputs, and therefore cannot process all samples in the ORES task (Table~\ref{tab:ourgooddata}). One may argue that visual prompts in ORES can be replaced by text prompts (\eg, ``Locate all pillows on \texttt{\textless mask-ref\textgreater}'' $\rightarrow$ ``Locate all pillows on the bed'', in the right column of Figure~\ref{fig:teaser}). However, when the scene is complex and involves multiple semantically similar objects, visual prompts can hardly be clearly and concisely ``translated'' into language. To investigate this discrepancy between visual prompts and text prompts, we manually convert \texttt{\textless mask-ref\textgreater} into language for 200 samples in \ourgooddata, and test GRES models and our \ourmodel on these samples. As shown in Table~\ref{tab:translation}, visual prompts are better perceived by \ourmodel, indicating that such visual prompts are necessary to guide the model in accurately locating the target entities that are related to the reference entity. When provided with the same pure-text prompts, despite the increased complexity of the converted prompts, \ourmodel still outperforms the existing GRES models.
+
+\begin{table}[t!]
+    \centering
+    \resizebox{\linewidth}{!}{%
+    \begin{tabular}{l l c c}
+        \toprule
+        & & \multicolumn{2}{c}{w/ \texttt{\textless mask-ref\textgreater}} \\
+        \cmidrule(lr){3-4}
+        Prompt & Model & gIoU & cIoU \\
+        \midrule
+        \multirow{5}{*}{Text + Converted \texttt{\textless mask-ref\textgreater}} & ReLA~\cite{liu2023gres} & 21.15 & 24.14 \\
+        & PSALM$_\text{1.3B}$~\cite{zhang2024psalm} & 24.68 & 24.19 \\
+        & GSVA$_\text{13B}$~\cite{xia2024gsva} & 22.66 & 25.10 \\
+        & \ourmodel$_\text{13B, SAM}$ (Ours) & 27.13 & 27.74 \\
+        & \ourmodel$_\text{13B, SAM, ORES-FT}$ (Ours) & 43.76 & 47.80 \\
+        \midrule
+        \multirow{2}{*}{Text + Visual \texttt{\textless mask-ref\textgreater}} & \ourmodel$_\text{13B, SAM}$ (Ours) & 35.91 & 37.77  \\
+        & \ourmodel$_\text{13B, SAM, ORES-FT}$ (Ours) & \bf 58.72 & \bf 68.77 \\
+        \bottomrule
+    \end{tabular}}
+    \caption{\textbf{Results of converting visual prompts into language.} We manually translate visual prompts for reference entities into language (\eg, ``Locate all pillows on \texttt{\textless mask-ref\textgreater}'' $\rightarrow$ ``Locate all pillows on the bed,'' see Figure~\ref{fig:teaser}), and test multiple GRES models and our \ourmodel model on the converted prompts.
+    The original visual prompts lead to better performance than the converted prompts, demonstrating that visual prompting is necessary in referring expression segmentation.
+    When provided with pure-text prompts, our model \ourmodel still outperforms all prior GRES models. The subscript $_\text{ORES-FT}$ means evaluation of \ourmodel that is further finetuned on the original training set (not including the converted prompts) of \ourgooddata.}
+    \label{tab:translation}
+\end{table}
+
+\section{Additional Ablation Study}
+\label{sec:supp-ablation}
+
+\noindent\textbf{Special tokens in mask tokenization.} In \ourmodel, we prepend a learnable special token \texttt{\textless mask-pool-pre\textgreater} to each candidate mask token and prepend a \texttt{\textless mask-ref-pre\textgreater} token to each reference mask token. These special tokens indicate the different roles of the following tokens. In Table~\ref{tab:token}, we compare \ourmodel with two variants: The first variant does not prepend any special tokens to the mask tokens, and the second variant prepends the same token to both candidate mask tokens and reference mask tokens. Using two different special tokens in mask tokenization achieves the best performance.
+
+\begin{table}[t!]
+    \centering
+    \resizebox{\linewidth}{!}{%
+    \begin{tabular}{l c c c}
+        \toprule
+        Special tokens & w/o \scriptsize\texttt{\textless mask-ref\textgreater} & w/ \scriptsize\texttt{\textless mask-ref\textgreater} & Overall cIoU \\
+        \midrule
+        No \texttt{\textless pre\textgreater} tokens & 55.61 & 34.98 & 50.13 \\
+        Same \texttt{\textless pre\textgreater} tokens & 54.68 & 32.37 & 48.49 \\
+        \cellcolor{cellgray}Different \texttt{\textless pre\textgreater} tokens & \cellcolor{cellgray}\bf 57.73 & \cellcolor{cellgray}\bf 44.47 & \cellcolor{cellgray} \bf 53.75 \\
+        \bottomrule
+    \end{tabular}}
+    \caption{\textbf{Comparison of \ourmodel with different special tokens prepended to mask tokens.} Prepending \texttt{\textless mask-pool-pre\textgreater} to candidate mask tokens and \texttt{\textless mask-ref-pre\textgreater} to reference mask tokens leads to the best result. All models are trained on the same 0.5M samples from \ourlargedata and evaluated on \ourgooddata.}
+    \label{tab:token}
+\end{table}
+
+\noindent\textbf{LMM scales.} In the main paper, we report the results of training our model \ourmodel based on LLaVA-1.5-13B~\cite{liu2024improved}, which originates from Vicuna-13B~\cite{vicuna2023}. In principle, \ourmodel can be built on other LLMs of different parameter scales. As an example, we train another \ourmodel based on LLaVA-1.5-7B. The model performance is summarized in Table~\ref{tab:llm}.
+
+\begin{table}[t!]
+    \centering
+    % \resizebox{\linewidth}{!}{%
+    \begin{tabular}{l c c c}
+        \toprule
+        Model & ORES & RES & GRES \\
+        \midrule
+        \ourmodel$_\text{7B, SAM / Co-DETR}$ & 52.19 & 73.7 & 67.30 \\
+        \cellcolor{cellgray}\ourmodel$_\text{13B, SAM / Co-DETR}$ & \cellcolor{cellgray}\bf 53.93 & \cellcolor{cellgray}\bf 75.0 & \cellcolor{cellgray}\bf 67.78 \\
+        \bottomrule
+    \end{tabular}%}
+    \caption{\textbf{Comparison of \ourmodel with different LLM scales.} The larger 13B LLM leads to a stronger performance on all tasks. The metric is the overall cIoU. We use SAM as the mask proposal model in ORES, and use Co-DETR in RES and GRES, consistent with the main results in Tables~\ref{tab:ourgooddata}, \ref{tab:res}, and \ref{tab:gres}.}
+    \label{tab:llm}
+\end{table}
+
+\section{Additional Qualitative Results}
+\label{sec:supp-qual}
+
+In Figure~\ref{fig:qual}, we provide additional visualized results of applying \ourmodel and other GRES models in the ORES task. We observe that \ourmodel (both before and after finetuned on \ourgooddata) achieves better results on \ourgooddata than all previous GRES models, which is consistent with our quantitative evaluation in Table~\ref{tab:ourgooddata} of the main paper.
+
+\begin{figure*}[ht]
+    \centering
+    \includegraphics[width=\linewidth]{fig/qual.pdf}
+    \caption{\textbf{Qualitative comparison on \ourgooddata.}}
+    \label{fig:qual}
+\end{figure*}
